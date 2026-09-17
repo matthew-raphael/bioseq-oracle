@@ -1,0 +1,100 @@
+[
+  {
+    "id": "start_codon",
+    "pattern": "ATG|AUG",
+    "label": "Start codon (ATG)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TAA",
+    "pattern": "TAA|UAA",
+    "label": "Stop codon (TAA)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TAG",
+    "pattern": "TAG|UAG",
+    "label": "Stop codon (TAG)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TGA",
+    "pattern": "TGA|UGA",
+    "label": "Stop codon (TGA)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "tata_box",
+    "pattern": "TATAAA|TATA[AT]A",
+    "label": "TATA box",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "kozak",
+    "pattern": "[AG]CC[AG]CCATG",
+    "label": "Kozak consensus",
+    "severity": "accent",
+    "category": "translation"
+  },
+  {
+    "id": "polya_signal",
+    "pattern": "AATAAA|AAUAAA",
+    "label": "Poly-A signal",
+    "severity": "accent",
+    "category": "post_transcriptional"
+  },
+  {
+    "id": "splice_site",
+    "pattern": "GT[ACGT]{4,6}AG",
+    "label": "Splice site",
+    "severity": "neutral",
+    "category": "splicing"
+  },
+  {
+    "id": "caat_box",
+    "pattern": "CCAAT|CAAT",
+    "label": "CAAT box",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "gc_box",
+    "pattern": "GGGCGG",
+    "label": "GC box (Sp1)",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "cpg_island",
+    "pattern": "CGCGCG|GCGCGC",
+    "label": "CpG island",
+    "severity": "neutral",
+    "category": "epigenetic"
+  },
+  {
+    "id": "hindiii",
+    "pattern": "AAGCTT",
+    "label": "HindIII site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  },
+  {
+    "id": "ecori",
+    "pattern": "GAATTC",
+    "label": "EcoRI site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  },
+  {
+    "id": "bamhi",
+    "pattern": "GGATCC",
+    "label": "BamHI site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  }
+]

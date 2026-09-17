@@ -1,0 +1,62 @@
+[
+  {
+    "id": "start_codon",
+    "label": "Start codon (ATG)",
+    "severity": "success",
+    "category": "translation",
+    "start": 1,
+    "end": 3,
+    "strand": "+",
+    "matchedSeq": "ATG"
+  },
+  {
+    "id": "start_codon",
+    "label": "Start codon (ATG)",
+    "severity": "success",
+    "category": "translation",
+    "start": 91,
+    "end": 93,
+    "strand": "+",
+    "matchedSeq": "ATG"
+  },
+  {
+    "id": "start_codon",
+    "label": "Start codon (ATG)",
+    "severity": "success",
+    "category": "translation",
+    "start": 114,
+    "end": 116,
+    "strand": "+",
+    "matchedSeq": "ATG"
+  },
+  {
+    "id": "stop_TGA",
+    "label": "Stop codon (TGA)",
+    "severity": "success",
+    "category": "translation",
+    "start": 115,
+    "end": 117,
+    "strand": "+",
+    "matchedSeq": "TGA"
+  },
+  {
+    "id": "stop_TGA",
+    "label": "Stop codon (TGA)",
+    "severity": "success",
+    "category": "translation",
+    "start": 130,
+    "end": 132,
+    "strand": "+",
+    "matchedSeq": "TGA"
+  },
+  {
+    "id": "splice_site",
+    "label": "Splice site",
+    "severity": "neutral",
+    "category": "splicing",
+    "start": 93,
+    "end": 101,
+    "strand": "+",
+    "matchedSeq": "GTGCCCCAG"
+  }
+]

@@ -1,0 +1,112 @@
+/* ═══════════════════════════════════════════════════════════
+   BioSeq Oracle — Design System
+   Layer 3 · Global CSS Tokens & Layout Primitives
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Color Tokens ── */
+:root {
+  /* Blue scale */
+  --blue-50:    #eff6ff;
+  --blue-100:   #dbeafe;
+  --blue-200:   #bfdbfe;
+  --blue-400:   #60a5fa;
+  --blue-500:   #3b82f6;
+  --blue-600:   #2563eb;
+  --blue-700:   #1d4ed8;
+  --blue-800:   #1e40af;
+  --blue-900:   #1e3a8a;
+
+  /* Slate scale */
+  --slate-0:    #ffffff;
+  --slate-50:   #f8fafc;
+  --slate-100:  #f1f5f9;
+  --slate-200:  #e2e8f0;
+  --slate-300:  #cbd5e1;
+  --slate-400:  #94a3b8;
+  --slate-500:  #64748b;
+  --slate-600:  #475569;
+  --slate-700:  #334155;
+  --slate-800:  #1e293b;
+  --slate-900:  #0f172a;
+  --slate-950:  #020617;
+
+  /* Semantic colors */
+  --green-50:   #f0fdf4;
+  --green-100:  #dcfce7;
+  --green-500:  #22c55e;
+  --green-600:  #16a34a;
+  --green-700:  #15803d;
+
+  --amber-50:   #fffbeb;
+  --amber-100:  #fef3c7;
+  --amber-500:  #f59e0b;
+  --amber-600:  #d97706;
+
+  --red-50:     #fef2f2;
+  --red-100:    #fee2e2;
+  --red-500:    #ef4444;
+  --red-600:    #dc2626;
+
+  --purple-50:  #faf5ff;
+  --purple-100: #ede9fe;
+  --purple-500: #a855f7;
+  --purple-600: #7c3aed;
+
+  --cyan-100:   #cffafe;
+  --cyan-600:   #0891b2;
+
+  /* Nucleotide syntax highlighting */
+  --nt-A: #2563eb;   /* Adenine  — Royal Blue */
+  --nt-T: #dc2626;   /* Thymine  — Crimson    */
+  --nt-G: #16a34a;   /* Guanine  — Emerald    */
+  --nt-C: #d97706;   /* Cytosine — Amber      */
+  --nt-U: #9333ea;   /* Uracil   — Purple     */
+
+  /* Reading Frame Colors */
+  --frame-p1: #2563eb;
+  --frame-p2: #059669;
+  --frame-p3: #d97706;
+  --frame-m1: #dc2626;
+  --frame-m2: #7c3aed;
+  --frame-m3: #0891b2;
+}
+
+/* ── Typography ── */
+:root {
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono:   ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --leading:     1.6;
+}
+
+/* ── Layout ── */
+:root {
+  --max-width:   1200px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-pill: 100px;
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ── Feature Tag Severity Classes ── */
+.feat-success { background: var(--green-100);  color: var(--green-700);  }
+.feat-accent  { background: var(--blue-100);   color: var(--blue-800);   }
+.feat-warning { background: var(--amber-100);  color: var(--amber-600);  }
+.feat-danger  { background: var(--red-100);    color: var(--red-600);    }
+.feat-neutral { background: var(--slate-100);  color: var(--slate-600);  }
+.feat-pro     { background: var(--purple-100); color: var(--purple-600); }
+
+/* ── Nucleotide Syntax Classes ── */
+.nt-A       { color: var(--nt-A); font-weight: 600; }
+.nt-T       { color: var(--nt-T); font-weight: 600; }
+.nt-U       { color: var(--nt-U); font-weight: 600; }
+.nt-G       { color: var(--nt-G); font-weight: 600; }
+.nt-C       { color: var(--nt-C); font-weight: 600; }
+.nt-N       { color: var(--slate-400); font-weight: 500; }
+
+/* ── Coordinates & Highlighting ── */
+.seq-coord  { color: var(--slate-400); user-select: none; font-weight: 400; }
+.seq-highlight { background-color: #fef08a !important; border-radius: 2px; }

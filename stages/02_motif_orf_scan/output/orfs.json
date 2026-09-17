@@ -1,0 +1,14 @@
+[
+  {
+    "frame": "+1",
+    "strand": "+",
+    "start": 1,
+    "end": 117,
+    "length": 117,
+    "codons": 39,
+    "seq": "ATGGGCAGCCCCCGCCCAGCCCTGCTTCTGGTGGCTCTCTTTGTGGTCCTCACCCTCCTGGCTCTCCTGGCCCTCAGCCCTGGAGATCAAATGTGCCCCAGGGCCCTTGGCAGATGA",
+    "peptide": "MGSPRPALLLVALFVVLTLLALLALSPGDQMCPRALGR",
+    "peptideMWDa": 3975.2,
+    "peptidePI": 10.85
+  }
+]

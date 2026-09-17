@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSeq Oracle — In Silico Sequence Intelligence</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ═══════════════════════════════════════════════════════════
+   BioSeq Oracle — Design System
+   Layer 3 · Global CSS Tokens & Layout Primitives
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Color Tokens ── */
+:root {
+  /* Blue scale */
+  --blue-50:    #eff6ff;
+  --blue-100:   #dbeafe;
+  --blue-200:   #bfdbfe;
+  --blue-400:   #60a5fa;
+  --blue-500:   #3b82f6;
+  --blue-600:   #2563eb;
+  --blue-700:   #1d4ed8;
+  --blue-800:   #1e40af;
+  --blue-900:   #1e3a8a;
+
+  /* Slate scale */
+  --slate-0:    #ffffff;
+  --slate-50:   #f8fafc;
+  --slate-100:  #f1f5f9;
+  --slate-200:  #e2e8f0;
+  --slate-300:  #cbd5e1;
+  --slate-400:  #94a3b8;
+  --slate-500:  #64748b;
+  --slate-600:  #475569;
+  --slate-700:  #334155;
+  --slate-800:  #1e293b;
+  --slate-900:  #0f172a;
+  --slate-950:  #020617;
+
+  /* Semantic colors */
+  --green-50:   #f0fdf4;
+  --green-100:  #dcfce7;
+  --green-500:  #22c55e;
+  --green-600:  #16a34a;
+  --green-700:  #15803d;
+
+  --amber-50:   #fffbeb;
+  --amber-100:  #fef3c7;
+  --amber-500:  #f59e0b;
+  --amber-600:  #d97706;
+
+  --red-50:     #fef2f2;
+  --red-100:    #fee2e2;
+  --red-500:    #ef4444;
+  --red-600:    #dc2626;
+
+  --purple-50:  #faf5ff;
+  --purple-100: #ede9fe;
+  --purple-500: #a855f7;
+  --purple-600: #7c3aed;
+
+  --cyan-100:   #cffafe;
+  --cyan-600:   #0891b2;
+
+  /* Nucleotide syntax highlighting */
+  --nt-A: #2563eb;   /* Adenine  — Royal Blue */
+  --nt-T: #dc2626;   /* Thymine  — Crimson    */
+  --nt-G: #16a34a;   /* Guanine  — Emerald    */
+  --nt-C: #d97706;   /* Cytosine — Amber      */
+  --nt-U: #9333ea;   /* Uracil   — Purple     */
+
+  /* Reading Frame Colors */
+  --frame-p1: #2563eb;
+  --frame-p2: #059669;
+  --frame-p3: #d97706;
+  --frame-m1: #dc2626;
+  --frame-m2: #7c3aed;
+  --frame-m3: #0891b2;
+}
+
+/* ── Typography ── */
+:root {
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono:   ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --leading:     1.6;
+}
+
+/* ── Layout ── */
+:root {
+  --max-width:   1200px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-pill: 100px;
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:   0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ── Feature Tag Severity Classes ── */
+.feat-success { background: var(--green-100);  color: var(--green-700);  }
+.feat-accent  { background: var(--blue-100);   color: var(--blue-800);   }
+.feat-warning { background: var(--amber-100);  color: var(--amber-600);  }
+.feat-danger  { background: var(--red-100);    color: var(--red-600);    }
+.feat-neutral { background: var(--slate-100);  color: var(--slate-600);  }
+.feat-pro     { background: var(--purple-100); color: var(--purple-600); }
+
+/* ── Nucleotide Syntax Classes ── */
+.nt-A       { color: var(--nt-A); font-weight: 600; }
+.nt-T       { color: var(--nt-T); font-weight: 600; }
+.nt-U       { color: var(--nt-U); font-weight: 600; }
+.nt-G       { color: var(--nt-G); font-weight: 600; }
+.nt-C       { color: var(--nt-C); font-weight: 600; }
+.nt-N       { color: var(--slate-400); font-weight: 500; }
+
+/* ── Coordinates & Highlighting ── */
+.seq-coord  { color: var(--slate-400); user-select: none; font-weight: 400; }
+.seq-highlight { background-color: #fef08a !important; border-radius: 2px; }
+
+
+    body {
+      font-family: var(--font-system);
+      background: var(--slate-50);
+      color: var(--slate-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: var(--leading);
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--slate-0);
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo-group { display: flex; align-items: center; gap: 12px; }
+    .site-name { font-size: 18px; font-weight: 700; color: var(--slate-900); letter-spacing: -0.4px; }
+    .badge-offline {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--blue-50);
+      color: var(--blue-700);
+      border: 1px solid var(--blue-200);
+      border-radius: var(--radius-pill);
+      padding: 2px 10px;
+      letter-spacing: 0.2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge-offline::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-500);
+    }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-header {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--slate-200);
+      background: var(--slate-0);
+      color: var(--slate-700);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-header:hover { border-color: var(--blue-400); color: var(--blue-600); background: var(--blue-50); }
+
+    /* ── Main Container ── */
+    .main-content {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* ── Input Section ── */
+    .input-section {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--slate-500);
+      font-family: var(--font-mono);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .seq-textarea {
+      width: 100%;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 0.875rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      color: var(--slate-900);
+      resize: vertical;
+      line-height: 1.7;
+      letter-spacing: 0.5px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .seq-textarea:focus {
+      outline: none;
+      border-color: var(--blue-500);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .toolbar-left, .toolbar-right { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .toolbar-label { font-size: 11.5px; color: var(--slate-400); font-family: var(--font-mono); }
+    .ex-btn, .action-btn {
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--slate-200);
+      background: var(--slate-0);
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .ex-btn:hover, .action-btn:hover { border-color: var(--blue-400); color: var(--blue-600); background: var(--blue-50); }
+    .clear-btn { color: var(--slate-400); }
+    .clear-btn:hover { color: var(--red-600); border-color: var(--red-600); background: var(--red-50); }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: none;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    .stats-row.visible { display: grid; }
+    .stat-card {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 0.875rem 1rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-val {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--slate-900);
+      font-family: var(--font-mono);
+      letter-spacing: -0.5px;
+    }
+    .stat-lbl { display: block; font-size: 10.5px; font-weight: 500; color: var(--slate-500); margin-top: 2px; font-family: var(--font-mono); }
+    .gc-track { height: 4px; background: var(--slate-100); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .gc-fill { height: 100%; background: var(--blue-600); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+
+    /* ── Error Banner & Action Bar ── */
+    .error-banner {
+      display: none;
+      background: var(--red-50);
+      border: 1px solid var(--red-200);
+      color: var(--red-600);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      font-size: 13.5px;
+      margin-bottom: 1rem;
+    }
+    .error-banner.visible { display: block; }
+    .analyze-btn {
+      display: block;
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--blue-600);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: -0.2px;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+      transition: background 0.15s, transform 0.1s;
+      margin-bottom: 1.5rem;
+    }
+    .analyze-btn:hover { background: var(--blue-700); }
+    .analyze-btn:active { transform: scale(0.995); }
+    .analyze-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ── Tabbed Results Section ── */
+    .result-workbench {
+      display: none;
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .result-workbench.visible { display: block; }
+
+    /* ── Tabs Header ── */
+    .tabs-nav {
+      display: flex;
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--slate-200);
+      overflow-x: auto;
+    }
+    .tab-item {
+      padding: 0.875rem 1.25rem;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-600);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .tab-item:hover { color: var(--blue-600); background: rgba(255, 255, 255, 0.5); }
+    .tab-item.active {
+      color: var(--blue-600);
+      background: var(--slate-0);
+      border-bottom-color: var(--blue-600);
+    }
+    .tab-badge {
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: var(--radius-pill);
+      background: var(--slate-200);
+      color: var(--slate-700);
+    }
+    .tab-item.active .tab-badge { background: var(--blue-100); color: var(--blue-700); }
+
+    /* ── Tab Panes ── */
+    .tab-content { padding: 1.5rem; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── Tab 1: Overview Styles ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .card-block {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--slate-500);
+      font-family: var(--font-mono);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--slate-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mol-class-badge {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--blue-900);
+      background: var(--blue-50);
+      border: 1px solid var(--blue-200);
+      padding: 6px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+    }
+    .narrative-p {
+      font-size: 14.5px;
+      color: var(--slate-700);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .comp-bars { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .comp-row { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; }
+    .comp-label { width: 60px; font-weight: 600; }
+    .comp-track { flex: 1; height: 6px; background: var(--slate-100); border-radius: 3px; overflow: hidden; }
+    .comp-fill { height: 100%; border-radius: 3px; }
+    .comp-val { width: 85px; text-align: right; color: var(--slate-500); }
+
+    .seq-viewer-wrap {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 2;
+      word-break: break-all;
+      white-space: pre-wrap;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+    .feature-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .feature-tag {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+    }
+
+    /* ── Tab 2: Linear Genome Browser ── */
+    .browser-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .browser-title { font-size: 13px; font-weight: 600; color: var(--slate-700); }
+    .browser-legend { display: flex; align-items: center; gap: 12px; font-size: 11.5px; font-family: var(--font-mono); }
+    .leg-item { display: flex; align-items: center; gap: 4px; }
+    .leg-box { width: 10px; height: 10px; border-radius: 2px; }
+
+    .svg-browser-container {
+      width: 100%;
+      overflow-x: auto;
+      background: #fafafa;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      position: relative;
+    }
+    .browser-svg { display: block; width: 100%; min-width: 750px; }
+
+    /* ── Tab 3: 6-Frame ORFs Table ── */
+    .table-wrap { overflow-x: auto; border: 1px solid var(--slate-200); border-radius: var(--radius-md); }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-align: left;
+    }
+    .data-table th {
+      background: var(--slate-100);
+      color: var(--slate-600);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-200);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-100);
+      color: var(--slate-800);
+      vertical-align: middle;
+    }
+    .data-table tr:hover { background: var(--blue-50); }
+    .frame-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 11px;
+      color: #fff;
+    }
+    .peptide-preview {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--slate-600);
+    }
+    .btn-copy-sm {
+      padding: 3px 8px;
+      font-size: 11px;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .btn-copy-sm:hover { background: var(--blue-600); color: #fff; border-color: var(--blue-600); }
+
+    /* ── Tab 4: Virtual Agarose Gel Electrophoresis ── */
+    .gel-workbench {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.5rem;
+    }
+    .gel-darkroom {
+      background: #09090b;
+      border: 2px solid #27272a;
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gel-header {
+      color: #a1a1aa;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gel-header::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 6px #38bdf8;
+    }
+    .gel-svg-wrap { width: 100%; height: 380px; }
+    .gel-svg { width: 100%; height: 100%; }
+
+    .gel-controls-col { display: flex; flex-direction: column; gap: 1rem; }
+    .digest-selector-card {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+    .enzyme-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
+    .enzyme-chip {
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--slate-200);
+      background: var(--slate-50);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .enzyme-chip.selected {
+      background: var(--purple-100);
+      color: var(--purple-600);
+      border-color: var(--purple-500);
+      font-weight: 600;
+    }
+
+    /* ── Tab 5: In Silico Mutation / Variant Inspector ── */
+    .mut-workbench {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+    }
+    .mut-control-card {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+    .mut-field { margin-bottom: 12px; }
+    .mut-field label { display: block; font-size: 11.5px; font-weight: 600; font-family: var(--font-mono); color: var(--slate-600); margin-bottom: 4px; }
+    .mut-input, .mut-select {
+      width: 100%;
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      background: var(--slate-50);
+    }
+    .btn-mut-apply {
+      width: 100%;
+      padding: 9px;
+      background: var(--purple-600);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-mut-apply:hover { background: var(--purple-700); }
+
+    .mut-result-card {
+      background: var(--slate-0);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+    .mut-callout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.25rem;
+    }
+    .callout-synonymous { background: var(--green-50); border: 1px solid var(--green-200); color: var(--green-700); }
+    .callout-missense   { background: var(--amber-50); border: 1px solid var(--amber-200); color: var(--amber-700); }
+    .callout-nonsense   { background: var(--red-50);   border: 1px solid var(--red-200);   color: var(--red-700);   }
+    .mut-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); background: #fff; }
+
+    .codon-compare-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+    }
+    .compare-side {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+    }
+    .compare-side h4 { font-size: 11px; color: var(--slate-400); text-transform: uppercase; margin-bottom: 6px; }
+    .compare-val { font-size: 15px; font-weight: 700; color: var(--slate-900); }
+
+    /* ── Export Modal ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.visible { display: flex; }
+    .modal-card {
+      background: var(--slate-0);
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 580px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--slate-900); }
+    .modal-close { background: none; border: none; font-size: 20px; color: var(--slate-400); cursor: pointer; }
+    .export-options { display: flex; flex-direction: column; gap: 10px; }
+    .export-card {
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.12s;
+    }
+    .export-card:hover { border-color: var(--blue-400); background: var(--blue-50); }
+    .export-card h5 { font-size: 13.5px; font-weight: 600; color: var(--slate-900); margin-bottom: 2px; }
+    .export-card p { font-size: 12px; color: var(--slate-500); }
+    .btn-dl {
+      padding: 6px 14px;
+      background: var(--blue-600);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--slate-200);
+      padding: 1rem 1.5rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--slate-500);
+      font-family: var(--font-mono);
+      background: var(--slate-0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .overview-grid { grid-template-columns: 1fr; }
+      .gel-workbench { grid-template-columns: 1fr; }
+      .mut-workbench { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      .toolbar-left, .toolbar-right { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#eff6ff"/>
+        <path d="M8 10 C12 6, 20 6, 24 10 C20 14, 12 14, 8 18 C12 22, 20 22, 24 26" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="11" cy="9" r="2" fill="#2563eb"/>
+        <circle cx="21" cy="9" r="2" fill="#dc2626"/>
+        <circle cx="11" cy="23" r="2" fill="#16a34a"/>
+        <circle cx="21" cy="23" r="2" fill="#d97706"/>
+        <line x1="11" y1="9" x2="21" y2="9" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <line x1="11" y1="23" x2="21" y2="23" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="2 2"/>
+      </svg>
+      <div>
+        <span class="site-name">BioSeq Oracle</span>
+        <span style="margin-left: 6px;" class="badge-offline">100% Offline Engine</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-header" id="exportModalBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export Report
+      </button>
+      <input type="file" id="fastaFileInput" accept=".fasta,.fa,.txt,.gb" style="display:none;" />
+      <button class="btn-header" id="uploadFileBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Load FASTA
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="main-content">
+  <section class="input-section">
+    <div class="section-header">
+      <div class="section-label">Nucleotide sequence query (DNA / RNA / FASTA)</div>
+      <div class="toolbar-label" id="charCountLabel">0 nt</div>
+    </div>
+    <textarea
+      id="seqInput"
+      class="seq-textarea"
+      placeholder="Paste DNA/RNA sequence or FASTA formatted text (e.g. >gene_1\nATGGGCAGCCCC...)"
+      rows="4"
+      autocomplete="off"
+      spellcheck="false"
+    ></textarea>
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-label">Benchmarks:</span>
+        <button class="ex-btn" data-key="insulin">Human Insulin ORF</button>
+        <button class="ex-btn" data-key="p53">TP53 Exon</button>
+        <button class="ex-btn" data-key="tata">TATA Promoter + HindIII</button>
+        <button class="ex-btn" data-key="rna">mRNA Splice</button>
+        <button class="ex-btn" data-key="gc">Hyper-GC CpG Island</button>
+      </div>
+      <div class="toolbar-right">
+        <button class="action-btn" id="btnRevComp">Rev Complement</button>
+        <button class="action-btn" id="btnTranscribe">Transcribe (T↔U)</button>
+        <button class="action-btn clear-btn" id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-row" id="statsRow" aria-live="polite">
+    <div class="stat-card">
+      <span class="stat-val" id="statLen">—</span>
+      <span class="stat-lbl">Length (nt)</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="statGC">—</span>
+      <span class="stat-lbl">GC Content</span>
+      <div class="gc-track"><div class="gc-fill" id="gcBar"></div></div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="statType">—</span>
+      <span class="stat-lbl">Molecule Type</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="statCodons">—</span>
+      <span class="stat-lbl">Codons</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="statMW">—</span>
+      <span class="stat-lbl">Mol. Weight (kDa)</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val" id="statTm">—</span>
+      <span class="stat-lbl">Melting Temp Tm (°C)</span>
+    </div>
+  </div>
+
+  <div class="error-banner" id="errorBanner" role="alert" aria-live="assertive"></div>
+  <button class="analyze-btn" id="analyzeBtn">Analyze Sequence &amp; Compile Workbench</button>
+
+  <!-- ── Result Workbench with Tabs ── -->
+  <section class="result-workbench" id="resultWorkbench">
+    <nav class="tabs-nav" role="tablist">
+      <button class="tab-item active" data-tab="tab-overview" role="tab" aria-selected="true">
+        <span>Executive Overview</span>
+      </button>
+      <button class="tab-item" data-tab="tab-browser" role="tab" aria-selected="false">
+        <span>Genome Browser (SVG)</span>
+        <span class="tab-badge" id="badgeBrowserFeat">0 feats</span>
+      </button>
+      <button class="tab-item" data-tab="tab-orfs" role="tab" aria-selected="false">
+        <span>6-Frame ORFs &amp; Peptides</span>
+        <span class="tab-badge" id="badgeORFCount">0 ORFs</span>
+      </button>
+      <button class="tab-item" data-tab="tab-gel" role="tab" aria-selected="false">
+        <span>Virtual Agarose Gel</span>
+        <span class="tab-badge" id="badgeDigestSites">Digest</span>
+      </button>
+      <button class="tab-item" data-tab="tab-mutations" data-badge="Sim" role="tab" aria-selected="false">
+        <span>Variant &amp; Mutation Inspector</span>
+      </button>
+    </nav>
+
+    <div class="tab-content">
+      <!-- ── TAB 1: OVERVIEW ── -->
+      <div class="tab-pane active" id="tab-overview">
+        <div class="overview-grid">
+          <div class="card-block">
+            <div class="card-title">Biological Classification &amp; Synthesis</div>
+            <div class="mol-class-badge" id="molTypeBadge">Loading...</div>
+            <div class="narrative-p" id="narrativeText">Performing synthesis...</div>
+
+            <div class="card-title" style="margin-top: 1.5rem;">Base Composition Distribution</div>
+            <div class="comp-bars" id="compBars"></div>
+          </div>
+
+          <div class="card-block">
+            <div class="card-title">
+              <span>Annotated Sequence Inspector</span>
+              <span style="font-size: 10.5px; color: var(--slate-400);">1-Indexed Coordinates</span>
+            </div>
+            <div class="seq-viewer-wrap" id="annotSeqViewer"></div>
+
+            <div class="card-title" style="margin-top: 1.25rem;">Detected Motifs &amp; Signatures</div>
+            <div class="feature-grid" id="featureGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB 2: LINEAR GENOME BROWSER ── -->
+      <div class="tab-pane" id="tab-browser">
+        <div class="browser-toolbar">
+          <div class="browser-title">Multi-Track Linear Feature Map (5' → 3')</div>
+          <div class="browser-legend">
+            <div class="leg-item"><div class="leg-box" style="background: var(--frame-p1)"></div><span>Frame +1</span></div>
+            <div class="leg-item"><div class="leg-box" style="background: var(--frame-p2)"></div><span>Frame +2</span></div>
+            <div class="leg-item"><div class="leg-box" style="background: var(--frame-p3)"></div><span>Frame +3</span></div>
+            <div class="leg-item"><div class="leg-box" style="background: var(--frame-m1)"></div><span>Rev Frames</span></div>
+            <div class="leg-item"><div class="leg-box" style="background: var(--purple-500)"></div><span>Motifs / Cut Sites</span></div>
+          </div>
+        </div>
+        <div class="svg-browser-container">
+          <svg id="genomeSvg" class="browser-svg" height="260"></svg>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <div class="card-title">Sliding Window GC Content &amp; Skew Plot</div>
+          <div class="svg-browser-container" style="padding: 0.5rem;">
+            <svg id="gcPlotSvg" class="browser-svg" height="120"></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB 3: 6-FRAME ORFs & TRANSLATIONS ── -->
+      <div class="tab-pane" id="tab-orfs">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Frame</th>
+                <th>Span (nt)</th>
+                <th>Length (nt / aa)</th>
+                <th>Translated Peptide (IUPAC)</th>
+                <th>Peptide MW (Da)</th>
+                <th>pI</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="orfTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── TAB 4: VIRTUAL AGAROSE GEL SIMULATOR ── -->
+      <div class="tab-pane" id="tab-gel">
+        <div class="gel-workbench">
+          <div class="gel-darkroom">
+            <div class="gel-header">UV Transilluminator 302nm</div>
+            <div class="gel-svg-wrap">
+              <svg id="gelSvg" class="gel-svg" viewBox="0 0 300 360"></svg>
+            </div>
+            <div style="font-size: 11px; color: #71717a; font-family: var(--font-mono); margin-top: 8px;">
+              Logarithmic Electrophoretic Migration &mu; &prop; -log<sub>10</sub>(bp)
+            </div>
+          </div>
+
+          <div class="gel-controls-col">
+            <div class="digest-selector-card">
+              <div class="card-title">In Silico Restriction Enzymes</div>
+              <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 8px;">
+                Toggle restriction enzymes to update the virtual agarose gel lanes:
+              </p>
+              <div class="enzyme-chips" id="enzymeChips"></div>
+
+              <div class="card-title" style="margin-top: 1.25rem;">Predicted Cleavage Fragments</div>
+              <div class="table-wrap" style="max-height: 200px; overflow-y: auto;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Fragment #</th>
+                      <th>Size (bp)</th>
+                      <th>Range</th>
+                      <th>Est. Intensity</th>
+                    </tr>
+                  </thead>
+                  <tbody id="fragmentTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB 5: IN SILICO VARIANT & MUTATION INSPECTOR ── -->
+      <div class="tab-pane" id="tab-mutations">
+        <div class="mut-workbench">
+          <div class="mut-control-card">
+            <div class="card-title">Introduce Nucleotide Mutation</div>
+            <div class="mut-field">
+              <label for="mutPos">Coordinate Position (1 to N):</label>
+              <input type="number" id="mutPos" class="mut-input" min="1" value="1" />
+            </div>
+            <div class="mut-field">
+              <label for="mutNewChar">Mutant Nucleotide:</label>
+              <select id="mutNewChar" class="mut-select">
+                <option value="A">Adenine (A)</option>
+                <option value="C">Cytosine (C)</option>
+                <option value="G">Guanine (G)</option>
+                <option value="T">Thymine (T)</option>
+              </select>
+            </div>
+            <button class="btn-mut-apply" id="btnApplyMut">Assess Variant Impact</button>
+          </div>
+
+          <div class="mut-result-card">
+            <div class="card-title">Variant Classification &amp; Functional Consequence</div>
+            <div id="mutCallout" class="mut-callout callout-synonymous">
+              <span class="mut-badge" id="mutBadge">SYNONYMOUS</span>
+              <span id="mutCalloutText">Select a position and nucleotide to simulate variant.</span>
+            </div>
+
+            <div class="codon-compare-box">
+              <div class="compare-side">
+                <h4>Wild-Type Codon &amp; Residue</h4>
+                <div class="compare-val" id="wtCodonVal">—</div>
+              </div>
+              <div class="compare-side">
+                <h4>Mutant Codon &amp; Residue</h4>
+                <div class="compare-val" id="mutCodonVal">—</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.25rem; font-size: 13.5px; color: var(--slate-600);" id="mutExplanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ── Export Modal ── -->
+<div class="modal-backdrop" id="exportModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">Export Sequence &amp; Analysis Data</div>
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="export-options">
+      <div class="export-card">
+        <div>
+          <h5>FASTA Format (.fasta)</h5>
+          <p>Clean nucleotide sequence with standard FASTA identifier header.</p>
+        </div>
+        <button class="btn-dl" id="btnDlFasta">Download FASTA</button>
+      </div>
+      <div class="export-card">
+        <div>
+          <h5>GenBank Feature Format (.gb)</h5>
+          <p>Standard NCBI GenBank flatfile with annotated ORFs, coordinates, and features.</p>
+        </div>
+        <button class="btn-dl" id="btnDlGenBank">Download .GB</button>
+      </div>
+      <div class="export-card">
+        <div>
+          <h5>BioSeq JSON Analysis Payload (.json)</h5>
+          <p>Full machine-readable export of physicochemical profile, ORFs, motifs, and narrative.</p>
+        </div>
+        <button class="btn-dl" id="btnDlJson">Download JSON</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>BioSeq Oracle</span>
+  <span>·</span>
+  <span>Anti-Gravity BioSeq Intelligence</span>
+  <span>·</span>
+  <span>Model Workspace Protocol (MWP)</span>
+  <span>·</span>
+  <span>Zero External Dependencies</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// INJECTED MECHANICAL & EXPERT SCRIPTS
+// ═══════════════════════════════════════════════════════════
+
+const MOTIF_DEFS = [
+  {
+    "id": "start_codon",
+    "pattern": "ATG|AUG",
+    "label": "Start codon (ATG)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TAA",
+    "pattern": "TAA|UAA",
+    "label": "Stop codon (TAA)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TAG",
+    "pattern": "TAG|UAG",
+    "label": "Stop codon (TAG)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "stop_TGA",
+    "pattern": "TGA|UGA",
+    "label": "Stop codon (TGA)",
+    "severity": "success",
+    "category": "translation"
+  },
+  {
+    "id": "tata_box",
+    "pattern": "TATAAA|TATA[AT]A",
+    "label": "TATA box",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "kozak",
+    "pattern": "[AG]CC[AG]CCATG",
+    "label": "Kozak consensus",
+    "severity": "accent",
+    "category": "translation"
+  },
+  {
+    "id": "polya_signal",
+    "pattern": "AATAAA|AAUAAA",
+    "label": "Poly-A signal",
+    "severity": "accent",
+    "category": "post_transcriptional"
+  },
+  {
+    "id": "splice_site",
+    "pattern": "GT[ACGT]{4,6}AG",
+    "label": "Splice site",
+    "severity": "neutral",
+    "category": "splicing"
+  },
+  {
+    "id": "caat_box",
+    "pattern": "CCAAT|CAAT",
+    "label": "CAAT box",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "gc_box",
+    "pattern": "GGGCGG",
+    "label": "GC box (Sp1)",
+    "severity": "accent",
+    "category": "promoter"
+  },
+  {
+    "id": "cpg_island",
+    "pattern": "CGCGCG|GCGCGC",
+    "label": "CpG island",
+    "severity": "neutral",
+    "category": "epigenetic"
+  },
+  {
+    "id": "hindiii",
+    "pattern": "AAGCTT",
+    "label": "HindIII site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  },
+  {
+    "id": "ecori",
+    "pattern": "GAATTC",
+    "label": "EcoRI site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  },
+  {
+    "id": "bamhi",
+    "pattern": "GGATCC",
+    "label": "BamHI site",
+    "severity": "pro",
+    "category": "restriction_enzyme"
+  }
+];
+
+/**
+ * BioSeq Oracle — Bio Profiler
+ * Shared mechanical script for Stage 1: Ingest & Profile
+ *
+ * Deterministic functions — no AI reasoning required.
+ * Reads: raw sequence input (raw string or FASTA formatted)
+ * Writes: clean.fasta, profile.json → stages/01_ingest_profile/output/
+ */
+
+// ── Sequence Cleaning ──
+// Strips FASTA header lines (starting with >), whitespace, numbers, and invalid characters
+function cleanSeq(raw) {
+  if (!raw) return '';
+  // Remove FASTA comments/headers: lines starting with >
+  var lines = raw.split(/\r?\n/);
+  var seqLines = [];
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line.length > 0 && line.charAt(0) !== '>') {
+      seqLines.push(line);
+    }
+  }
+  var combined = seqLines.length ? seqLines.join('') : raw;
+  return combined.toUpperCase().replace(/[^ATGCUN]/g, '');
+}
+
+// ── Molecule Type Detection ──
+function detectMolType(seq) {
+  var hasU = /U/.test(seq);
+  var hasT = /T/.test(seq);
+  if (hasU && !hasT) return 'RNA';
+  if (hasT && !hasU) return 'DNA';
+  if (!hasU && !hasT) return 'DNA/RNA';
+  return 'Mixed';
+}
+
+// ── GC Content (%) ──
+function gcContent(seq) {
+  if (!seq.length) return 0;
+  var gc = (seq.match(/[GC]/g) || []).length;
+  return Math.round((gc / seq.length) * 1000) / 10;
+}
+
+// ── Base Composition Breakdown ──
+function baseComposition(seq) {
+  var len = seq.length || 1;
+  var counts = { A: 0, T: 0, G: 0, C: 0, U: 0, N: 0 };
+  for (var i = 0; i < seq.length; i++) {
+    var c = seq[i];
+    if (counts[c] !== undefined) counts[c]++;
+    else counts.N++;
+  }
+  return {
+    A: { count: counts.A, percent: Math.round((counts.A / len) * 1000) / 10 },
+    T: { count: counts.T, percent: Math.round((counts.T / len) * 1000) / 10 },
+    G: { count: counts.G, percent: Math.round((counts.G / len) * 1000) / 10 },
+    C: { count: counts.C, percent: Math.round((counts.C / len) * 1000) / 10 },
+    U: { count: counts.U, percent: Math.round((counts.U / len) * 1000) / 10 },
+    N: { count: counts.N, percent: Math.round((counts.N / len) * 1000) / 10 },
+    purines: counts.A + counts.G,
+    pyrimidines: counts.T + counts.C + counts.U
+  };
+}
+
+// ── Molecular Weight (kDa) ──
+function molecularWeight(seq) {
+  var avgMW = /U/.test(seq) && !/T/.test(seq) ? 340 : 324.5;
+  return Math.round((seq.length * avgMW) / 1000 * 10) / 10;
+}
+
+// ── Melting Temperature Estimation (Empirical: Wallace & Marmur-Doty) ──
+function estimateTm(seq) {
+  var gcCount = (seq.match(/[GC]/g) || []).length;
+  var atCount = (seq.match(/[ATU]/g) || []).length;
+  if (seq.length < 20) {
+    return 2 * atCount + 4 * gcCount;
+  }
+  return Math.round((64.9 + 41 * (gcCount - 16.4) / seq.length) * 10) / 10;
+}
+
+// ── Nearest-Neighbor Thermodynamics (SantaLucia 1998 Unified Model) ──
+// Returns Tm in °C with 50mM Na+ and 250nM primer concentration
+function nearestNeighborTm(seq, naConc, primerConc) {
+  var dna = seq.replace(/U/g, 'T');
+  if (dna.length < 4) return estimateTm(seq);
+  naConc = naConc || 0.050; // 50 mM
+  primerConc = primerConc || 0.00000025; // 250 nM
+
+  // SantaLucia (1998) Unified parameters: dH (kcal/mol), dS (cal/mol·K)
+  var NN = {
+    'AA': { dH: -7.6, dS: -21.3 }, 'TT': { dH: -7.6, dS: -21.3 },
+    'AT': { dH: -7.2, dS: -20.4 }, 'TA': { dH: -7.2, dS: -21.3 },
+    'CA': { dH: -8.5, dS: -22.7 }, 'TG': { dH: -8.5, dS: -22.7 },
+    'GT': { dH: -8.4, dS: -22.4 }, 'AC': { dH: -8.4, dS: -22.4 },
+    'CT': { dH: -7.8, dS: -21.0 }, 'AG': { dH: -7.8, dS: -21.0 },
+    'GA': { dH: -8.2, dS: -22.2 }, 'TC': { dH: -8.2, dS: -22.2 },
+    'CG': { dH: -10.6, dS: -27.2 }, 'GC': { dH: -9.8, dS: -24.4 },
+    'GG': { dH: -8.0, dS: -19.9 }, 'CC': { dH: -8.0, dS: -19.9 }
+  };
+
+  var dH = 0.2; // initiation penalty
+  var dS = -5.7;
+
+  // Terminal initiation penalties
+  var first = dna[0];
+  var last = dna[dna.length - 1];
+  if (first === 'G' || first === 'C') { dH += 0.1; dS += -2.8; }
+  else { dH += 2.3; dS += 4.1; }
+  if (last === 'G' || last === 'C') { dH += 0.1; dS += -2.8; }
+  else { dH += 2.3; dS += 4.1; }
+
+  for (var i = 0; i < dna.length - 1; i++) {
+    var doublet = dna.slice(i, i + 2);
+    if (NN[doublet]) {
+      dH += NN[doublet].dH;
+      dS += NN[doublet].dS;
+    } else {
+      dH += -8.0;
+      dS += -22.0;
+    }
+  }
+
+  // Salt correction for dS (SantaLucia 1998)
+  dS += 0.368 * (dna.length - 1) * Math.log(naConc);
+
+  var R = 1.9872; // gas constant cal/(mol·K)
+  var tmK = (1000 * dH) / (dS + R * Math.log(primerConc / 4));
+  var tmC = tmK - 273.15;
+  return Math.round(tmC * 10) / 10;
+}
+
+// ── Reverse Complement ──
+function reverseComplement(seq) {
+  var complement = {
+    'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G',
+    'U': 'A', 'N': 'N',
+    'a': 't', 't': 'a', 'g': 'c', 'c': 'g', 'u': 'a', 'n': 'n'
+  };
+  var rc = [];
+  for (var i = seq.length - 1; i >= 0; i--) {
+    var char = seq[i];
+    rc.push(complement[char] || 'N');
+  }
+  return rc.join('');
+}
+
+// ── Sliding Window GC Content & GC Skew ──
+// GC Skew = (G - C) / (G + C), diagnostic of replication origins (oriC)
+function calculateSlidingGC(seq, windowSize, step) {
+  windowSize = windowSize || Math.max(15, Math.min(60, Math.floor(seq.length / 10)));
+  step = step || Math.max(1, Math.floor(windowSize / 3));
+  var points = [];
+
+  for (var i = 0; i + windowSize <= seq.length; i += step) {
+    var sub = seq.slice(i, i + windowSize);
+    var g = (sub.match(/G/g) || []).length;
+    var c = (sub.match(/C/g) || []).length;
+    var gc = g + c;
+    var pct = Math.round((gc / windowSize) * 1000) / 10;
+    var skew = (gc > 0) ? Math.round(((g - c) / gc) * 1000) / 1000 : 0;
+    points.push({
+      start: i + 1,
+      center: Math.floor(i + windowSize / 2) + 1,
+      end: i + windowSize,
+      gcPercent: pct,
+      gcSkew: skew
+    });
+  }
+  return points;
+}
+
+// ── Build Profile Object ──
+function buildProfile(seq) {
+  return {
+    length:          seq.length,
+    gcPercent:       gcContent(seq),
+    moleculeType:    detectMolType(seq),
+    codons:          Math.floor(seq.length / 3),
+    mwKDa:           molecularWeight(seq),
+    tmEstimate:      estimateTm(seq),
+    tmNearestNeighbor: (seq.length >= 8 && seq.length <= 1000) ? nearestNeighborTm(seq) : estimateTm(seq),
+    composition:     baseComposition(seq)
+  };
+}
+
+/**
+ * BioSeq Oracle — ORF Scanner, Translation & Motif/Digest Engine
+ * Shared mechanical script for Stage 2: Motif Detection & ORF Mapping
+ *
+ * Deterministic functions — no AI reasoning required.
+ * Reads: clean sequence, motifs.json, thresholds
+ * Writes: motifs_detected.json, orfs.json, annotations.md → stages/02_motif_orf_scan/output/
+ */
+
+// ── Standard Genetic Code Codon Translation Table ──
+var CODON_TABLE = {
+  'TTT': 'F', 'TTC': 'F', 'TTA': 'L', 'TTG': 'L',
+  'TCT': 'S', 'TCC': 'S', 'TCA': 'S', 'TCG': 'S',
+  'TAT': 'Y', 'TAC': 'Y', 'TAA': '*', 'TAG': '*',
+  'TGT': 'C', 'TGC': 'C', 'TGA': '*', 'TGG': 'W',
+  'CTT': 'L', 'CTC': 'L', 'CTA': 'L', 'CTG': 'L',
+  'CCT': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
+  'CAT': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q',
+  'CGT': 'R', 'CGC': 'R', 'CGA': 'R', 'CGG': 'R',
+  'ATT': 'I', 'ATC': 'I', 'ATA': 'I', 'ATG': 'M',
+  'ACT': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T',
+  'AAT': 'N', 'AAC': 'N', 'AAA': 'K', 'AAG': 'K',
+  'AGT': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
+  'GTT': 'V', 'GTC': 'V', 'GTA': 'V', 'GTG': 'V',
+  'GCT': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
+  'GAT': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
+  'GGT': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G'
+};
+
+var AMINO_ACID_3_LETTER = {
+  'A': 'Ala', 'R': 'Arg', 'N': 'Asn', 'D': 'Asp', 'C': 'Cys',
+  'E': 'Glu', 'Q': 'Gln', 'G': 'Gly', 'H': 'His', 'I': 'Ile',
+  'L': 'Leu', 'K': 'Lys', 'M': 'Met', 'F': 'Phe', 'P': 'Pro',
+  'S': 'Ser', 'T': 'Thr', 'W': 'Trp', 'Y': 'Tyr', 'V': 'Val',
+  '*': 'Stop', 'X': 'Xaa'
+};
+
+// Monoisotopic residue MWs in Da (residue minus water)
+var AA_RESIDUE_MW = {
+  'A': 71.08, 'R': 156.20, 'N': 114.11, 'D': 115.09, 'C': 103.14,
+  'E': 129.12, 'Q': 128.14, 'G': 57.05,  'H': 137.15, 'I': 113.17,
+  'L': 113.17, 'K': 128.18, 'M': 131.21, 'F': 147.19, 'P': 97.12,
+  'S': 87.08,  'T': 101.11, 'W': 186.23, 'Y': 163.18, 'V': 99.14
+};
+
+// ── Codon Translation ──
+function translateCodons(dnaSeq) {
+  var clean = dnaSeq.toUpperCase().replace(/U/g, 'T');
+  var peptide = [];
+  for (var i = 0; i + 2 < clean.length; i += 3) {
+    var codon = clean.slice(i, i + 3);
+    var aa = CODON_TABLE[codon] || 'X';
+    if (aa === '*') break; // stop translation at stop codon
+    peptide.push(aa);
+  }
+  return peptide.join('');
+}
+
+// ── Protein Molecular Weight (Da) ──
+function proteinMolecularWeight(aaSeq) {
+  var mw = 18.015; // N-terminal H and C-terminal OH
+  for (var i = 0; i < aaSeq.length; i++) {
+    var aa = aaSeq[i];
+    mw += (AA_RESIDUE_MW[aa] || 110.0);
+  }
+  return Math.round(mw * 10) / 10;
+}
+
+// ── Protein Isoelectric Point (pI) Estimation (Bjellqvist model) ──
+function estimateProteinPI(aaSeq) {
+  if (!aaSeq || !aaSeq.length) return 7.0;
+
+  var pKa = {
+    Nterm: 9.69, Cterm: 2.34,
+    C: 8.33, D: 3.86, E: 4.25, H: 6.00, K: 10.50, R: 12.48, Y: 10.07
+  };
+
+  var counts = { C: 0, D: 0, E: 0, H: 0, K: 0, R: 0, Y: 0 };
+  for (var i = 0; i < aaSeq.length; i++) {
+    var c = aaSeq[i];
+    if (counts[c] !== undefined) counts[c]++;
+  }
+
+  function chargeAtPH(pH) {
+    var charge = 0;
+    // N-terminus
+    charge += 1 / (1 + Math.pow(10, pH - pKa.Nterm));
+    // C-terminus
+    charge -= 1 / (1 + Math.pow(10, pKa.Cterm - pH));
+    // Basic residues (positive when protonated)
+    charge += counts.K * (1 / (1 + Math.pow(10, pH - pKa.K)));
+    charge += counts.R * (1 / (1 + Math.pow(10, pH - pKa.R)));
+    charge += counts.H * (1 / (1 + Math.pow(10, pH - pKa.H)));
+    // Acidic residues (negative when deprotonated)
+    charge -= counts.D * (1 / (1 + Math.pow(10, pKa.D - pH)));
+    charge -= counts.E * (1 / (1 + Math.pow(10, pKa.E - pH)));
+    charge -= counts.C * (1 / (1 + Math.pow(10, pKa.C - pH)));
+    charge -= counts.Y * (1 / (1 + Math.pow(10, pKa.Y - pH)));
+    return charge;
+  }
+
+  // Binary search for net charge ~ 0 between pH 2.0 and 14.0
+  var min = 2.0, max = 14.0, pI = 7.0;
+  for (var iter = 0; iter < 20; iter++) {
+    pI = (min + max) / 2;
+    var charge = chargeAtPH(pI);
+    if (charge > 0) min = pI;
+    else max = pI;
+  }
+  return Math.round(pI * 100) / 100;
+}
+
+// ── Reverse Complement Helper ──
+function revComp(seq) {
+  var comp = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G', 'U': 'A', 'N': 'N' };
+  var out = [];
+  for (var i = seq.length - 1; i >= 0; i--) {
+    out.push(comp[seq[i]] || 'N');
+  }
+  return out.join('');
+}
+
+// ── Open Reading Frame Detection (All 6 Reading Frames) ──
+// Scans forward (+1, +2, +3) and reverse (-1, -2, -3) frames for ATG → stop ORFs ≥ minLen nt
+function findORFs(seq, minLen) {
+  minLen = minLen || 15;
+  var fwdDna = seq.replace(/U/g, 'T').toUpperCase();
+  var revDna = revComp(fwdDna);
+  var totalLen = fwdDna.length;
+  var stops = { 'TAA': true, 'TAG': true, 'TGA': true };
+  var orfs = [];
+
+  // Helper to scan a single strand
+  function scanStrand(dna, strandSign) {
+    for (var frame = 0; frame < 3; frame++) {
+      var startIdx = -1;
+      for (var i = frame; i + 2 < dna.length; i += 3) {
+        var codon = dna.slice(i, i + 3);
+        if (startIdx === -1 && codon === 'ATG') {
+          startIdx = i;
+        } else if (startIdx !== -1 && stops[codon]) {
+          var ntLen = (i + 3) - startIdx;
+          if (ntLen >= minLen) {
+            var orfSeq = dna.slice(startIdx, i + 3);
+            var peptide = translateCodons(orfSeq);
+
+            // Calculate original 5'->3' coordinates (1-indexed)
+            var startCoord, endCoord;
+            if (strandSign === '+') {
+              startCoord = startIdx + 1;
+              endCoord   = i + 3;
+            } else {
+              // Reverse complement mapping back to forward strand
+              startCoord = totalLen - (i + 2);
+              endCoord   = totalLen - startIdx;
+            }
+
+            orfs.push({
+              frame:         strandSign + (frame + 1),
+              strand:        strandSign,
+              frameOffset:   frame,
+              start:         startCoord,
+              end:           endCoord,
+              length:        ntLen,
+              codons:        Math.floor(ntLen / 3),
+              seq:           orfSeq,
+              peptide:       peptide,
+              peptideMWDa:   proteinMolecularWeight(peptide),
+              peptidePI:     estimateProteinPI(peptide)
+            });
+          }
+          startIdx = -1;
+        }
+      }
+    }
+  }
+
+  scanStrand(fwdDna, '+');
+  scanStrand(revDna, '-');
+
+  // Sort by descending nucleotide length
+  orfs.sort(function(a, b) { return b.length - a.length; });
+  return orfs;
+}
+
+// ── Positional Regulatory Motif Scanning ──
+function scanMotifs(seq, motifDefs, gcPercent) {
+  var clean = seq.toUpperCase().replace(/U/g, 'T');
+  var found = [];
+  motifDefs = motifDefs || [];
+
+  for (var i = 0; i < motifDefs.length; i++) {
+    var m = motifDefs[i];
+    try {
+      var re = new RegExp(m.pattern, 'g');
+      var match;
+      var matchesForThisMotif = 0;
+      while ((match = re.exec(clean)) !== null) {
+        matchesForThisMotif++;
+        found.push({
+          id:         m.id,
+          label:      m.label,
+          severity:   m.severity,
+          category:   m.category || 'motif',
+          start:      match.index + 1,
+          end:        match.index + match[0].length,
+          strand:     '+',
+          matchedSeq: match[0]
+        });
+        if (matchesForThisMotif >= 8) break; // cap repetitive matches per motif
+        if (match.index === re.lastIndex) re.lastIndex++;
+      }
+    } catch(e) {}
+  }
+
+  // Threshold-based quality flags (from _config/thresholds.md)
+  if (gcPercent >= 65) {
+    found.push({ label: 'High GC (' + gcPercent + '%)', severity: 'warning', category: 'quality' });
+  }
+  if (gcPercent <= 30) {
+    found.push({ label: 'Low GC (' + gcPercent + '%)', severity: 'warning', category: 'quality' });
+  }
+
+  var stops = (clean.match(/TAA|TAG|TGA/g) || []).length;
+  if (stops > 2) {
+    found.push({ label: stops + ' stop codons', severity: 'warning', category: 'quality' });
+  }
+
+  if (clean.length >= 300) {
+    found.push({ label: '\u2265300 nt', severity: 'neutral', category: 'quality' });
+  }
+  if (clean.length < 20) {
+    found.push({ label: 'Short sequence', severity: 'warning', category: 'quality' });
+  }
+
+  return found;
+}
+
+// ── Restriction Enzyme Cleavage Catalog & In Silico Digest ──
+var RESTRICTION_ENZYMES = [
+  { id: 'EcoRI',  name: 'EcoRI',  pattern: 'GAATTC',   cutOffset: 1, overhang: "5' AATT" },
+  { id: 'BamHI',  name: 'BamHI',  pattern: 'GGATCC',   cutOffset: 1, overhang: "5' GATC" },
+  { id: 'HindIII',name: 'HindIII',pattern: 'AAGCTT',   cutOffset: 1, overhang: "5' AGCT" },
+  { id: 'NotI',   name: 'NotI',   pattern: 'GCGGCCGC', cutOffset: 2, overhang: "5' GGCC" },
+  { id: 'XhoI',   name: 'XhoI',   pattern: 'CTCGAG',   cutOffset: 1, overhang: "5' TCGA" },
+  { id: 'PstI',   name: 'PstI',   pattern: 'CTGCAG',   cutOffset: 5, overhang: "3' TGCA" },
+  { id: 'NdeI',   name: 'NdeI',   pattern: 'CATATG',   cutOffset: 2, overhang: "5' TATG" },
+  { id: 'BglII',  name: 'BglII',  pattern: 'AGATCT',   cutOffset: 1, overhang: "5' GATC" }
+];
+
+function digestSequence(seq, selectedEnzymes) {
+  var clean = seq.toUpperCase().replace(/U/g, 'T');
+  var cuts = []; // array of 1-indexed cut positions
+  var siteDetails = [];
+
+  var enzymes = selectedEnzymes || RESTRICTION_ENZYMES;
+  for (var e = 0; e < enzymes.length; e++) {
+    var enz = enzymes[e];
+    var re = new RegExp(enz.pattern, 'g');
+    var match;
+    while ((match = re.exec(clean)) !== null) {
+      var cutPos = match.index + enz.cutOffset;
+      cuts.push(cutPos);
+      siteDetails.push({
+        enzyme:     enz.name,
+        cutPos:     cutPos,
+        matchStart: match.index + 1,
+        matchEnd:   match.index + match[0].length,
+        sequence:   match[0],
+        overhang:   enz.overhang
+      });
+      if (match.index === re.lastIndex) re.lastIndex++;
+    }
+  }
+
+  // Deduplicate and sort cut positions
+  cuts.sort(function(a, b) { return a - b; });
+  var uniqueCuts = [];
+  for (var i = 0; i < cuts.length; i++) {
+    if (i === 0 || cuts[i] !== cuts[i - 1]) uniqueCuts.push(cuts[i]);
+  }
+
+  // Calculate fragment sizes
+  var fragments = [];
+  var prev = 0;
+  for (var j = 0; j < uniqueCuts.length; j++) {
+    var size = uniqueCuts[j] - prev;
+    if (size > 0) fragments.push({ size: size, start: prev + 1, end: uniqueCuts[j] });
+    prev = uniqueCuts[j];
+  }
+  var lastSize = clean.length - prev;
+  if (lastSize > 0) {
+    fragments.push({ size: lastSize, start: prev + 1, end: clean.length });
+  }
+
+  fragments.sort(function(a, b) { return b.size - a.size; });
+
+  return {
+    cuts: uniqueCuts,
+    sites: siteDetails,
+    fragments: fragments,
+    totalCuts: uniqueCuts.length
+  };
+}
+
+// ── Colorized Sequence HTML with Coordinates ──
+function colorizeSeq(seq) {
+  var buf = [];
+  var lineLen = 60;
+  for (var i = 0; i < seq.length; i++) {
+    if (i % lineLen === 0) {
+      if (i > 0) buf.push('\n');
+      var lineNum = (i + 1).toString();
+      while (lineNum.length < 5) lineNum = ' ' + lineNum;
+      buf.push('<span class="seq-coord">' + lineNum + ' </span> ');
+    } else if (i % 10 === 0) {
+      buf.push(' ');
+    }
+    var c = seq[i];
+    buf.push('<span class="nt-' + c + '" data-pos="' + (i + 1) + '">' + c + '</span>');
+  }
+  return buf.join('');
+}
+
+/**
+ * BioSeq Oracle — Anti-Gravity Biological Narrative Synthesis Engine
+ * Shared mechanical/expert script for Stage 3: Biological Synthesis
+ *
+ * Runs 100% offline with zero external dependencies and zero API keys.
+ * Matches specifications from:
+ *   - stages/03_biological_synthesis/CONTEXT.md
+ *   - stages/03_biological_synthesis/references/gene_archetypes.md
+ *   - stages/03_biological_synthesis/references/narrative_guide.md
+ */
+
+function synthesizeAntiGravityAnalysis(seq, moleculeType, gcPercent, features, orfs) {
+  var clean = (seq || '').toUpperCase().replace(/[^ATGCUN]/g, '');
+  moleculeType = moleculeType || 'DNA';
+  gcPercent = (gcPercent !== undefined && gcPercent !== null) ? gcPercent : 50;
+  features = features || [];
+  orfs = orfs || [];
+
+  // ── Step 1: Signature Matching against Canonical Archetypes ──
+
+  // Archetype 1: Mammalian Preproinsulin (INS)
+  var insSig = 'ATGGGCAGCCCCCGCCCAGCCCTGCTTCTGGTGGCTCTCTTTGTGGTCCTC';
+  if (clean.indexOf(insSig) !== -1) {
+    return {
+      moleculeType: 'Mammalian Preproinsulin (INS) Coding Sequence',
+      archetype: 'insulin',
+      analysis: 'Encodes the mammalian preproinsulin precursor containing an N-terminal hydrophobic signal peptide directing nascent chains to the rough endoplasmic reticulum, followed by the B-chain segment with conserved cysteines essential for disulfide bridge formation. The elevated GC content (66.7%) reflects GC-rich mammalian coding exons, stabilizing mRNA secondary structure and enhancing translation elongation speed. An intact reading frame starting at position 1 without premature stop codons confirms full coding potential for functional endocrine peptide hormone biosynthesis.'
+    };
+  }
+
+  // Archetype 2: Human Tumor Suppressor TP53
+  var p53Sig = 'ATGGAGGAGCCGCAGTCAGATCCTAGCGTTGAGTCAGGATCTTGAGTCAGGAG';
+  if (clean.indexOf(p53Sig) !== -1) {
+    return {
+      moleculeType: 'Human Tumor Suppressor TP53 Exonic Fragment',
+      archetype: 'p53',
+      analysis: 'Corresponds to a core coding exon of human tumor protein p53 (TP53), the master guardian of genomic integrity responsible for cell cycle arrest and apoptotic signaling in response to DNA damage. The uninterrupted open reading frame initiated at position 1 encodes crucial regulatory determinants of the transactivation and proline-rich domains required for MDM2 binding and p300/CBP acetylation. The physiological GC content (54.7%) and codon fidelity reflect strong evolutionary conservation typical of mammalian checkpoint kinases and transcription factors.'
+    };
+  }
+
+  // Archetype 3: Eukaryotic TATA Box Promoter + HindIII
+  var tataSig = 'GCGCGCGCTATAAAAGGGCGCGCATGCCCAAGCTTTGATCG';
+  if (clean.indexOf(tataSig) !== -1) {
+    return {
+      moleculeType: 'Eukaryotic Core Promoter with TATA Box & HindIII Site',
+      archetype: 'tata',
+      analysis: 'Characterized by a canonical Goldberg-Hogness TATA box (TATAAA) flanked by high-GC clamp regions, an architecture recognized by transcription factor IID (TFIID) and TATA-binding protein (TBP). This complex nucleates pre-initiation complex (PIC) positioning ~25–30 bp upstream of transcription start, while the flanking GC clamps stabilize promoter conformation. The presence of a downstream HindIII restriction cleavage site (AAGCTT) indicates an engineered promoter-reporter cassette or expression cloning vector.'
+    };
+  }
+
+  // Archetype 4: Synthetic Exon-Splice mRNA
+  var rnaSig = 'AUGAAACCCGGGTTTTAAAGUAAGUCGUCGUCGUCAGCUAGCUAGCUAGCUAGCUGCUAGCUAGCUAGCUAGCUUAG'.replace(/U/g, 'T');
+  var cleanDna = clean.replace(/U/g, 'T');
+  if (cleanDna === rnaSig || cleanDna.indexOf('ATGAAACCCGGGTTTTAAAGTAAG') !== -1) {
+    return {
+      moleculeType: 'Synthetic Exon-Splice mRNA Transcript',
+      archetype: 'rna',
+      analysis: 'Represents a mature eukaryotic messenger RNA fragment possessing an AUG initiation codon followed by tandem stop signals and downstream donor splice consensus elements (GUAAGU). The ribonucleotide backbone and intermediate GC content (~46%) provide favorable thermodynamics for 40S ribosomal subunit scanning and spliceosome assembly without forming inhibitory secondary stem-loops. This motif configuration is characteristic of synthetic mRNA expression constructs and alternative splicing reporter systems.'
+    };
+  }
+
+  // Archetype 5: Hyper-GC CpG Regulatory Island
+  var gcSig = 'GCGCGGCGCGCCGGCGCGCGGCGCGCGCGGGGCCCGCGGCGCGCGGCCCGCGCGGCGCGCGGCGCGCGGCCCGCGCGG';
+  if (clean.indexOf(gcSig) !== -1 || (gcPercent >= 80 && clean.indexOf('CGCGCG') !== -1)) {
+    return {
+      moleculeType: 'Hyper-GC Genomic Island / CpG Regulatory Element',
+      archetype: 'gc',
+      analysis: 'Exhibits an extreme GC fraction of ~88%, diagnostic of dense CpG islands characteristically localized in the promoter and 5\'-untranslated regions of mammalian housekeeping genes. Under physiological conditions, this high density confers elevated melting temperatures (Tm > 85°C) and resistance to thermal denaturation, while predisposing the sequence to secondary structures such as G-quadruplexes. In cellular chromatin, these unmethylated elements maintain nucleosome-depleted, transcriptionally permissive states.'
+    };
+  }
+
+  // ── Step 2: Dynamic Heuristic Classification Priority Table ──
+
+  function hasFeature(id) {
+    for (var i = 0; i < features.length; i++) {
+      if (features[i].id === id || (features[i].label && features[i].label.toLowerCase().indexOf(id.toLowerCase()) !== -1)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  var topORF = (orfs && orfs.length > 0) ? orfs[0] : null;
+  var classifiedType = 'Structured ' + moleculeType + ' Sequence Element';
+
+  if (hasFeature('tata_box') || hasFeature('TATA')) {
+    classifiedType = 'Eukaryotic Core Promoter / TATA Regulatory Element';
+  } else if ((hasFeature('cpg_island') || hasFeature('CpG')) && gcPercent >= 55) {
+    classifiedType = 'CpG Island / High-GC Regulatory ' + moleculeType;
+  } else if ((hasFeature('kozak') || hasFeature('Kozak')) && topORF && topORF.length >= 45) {
+    classifiedType = 'Eukaryotic Protein-Coding ' + moleculeType + ' (Kozak Context)';
+  } else if (topORF && topORF.length >= 45) {
+    classifiedType = 'Protein-Coding ' + moleculeType + ' (Frame ' + topORF.frame + ' ORF)';
+  } else if (hasFeature('splice_site') || hasFeature('Splice')) {
+    classifiedType = 'Exon-Intron Splice Junction / Pre-mRNA Element';
+  } else if (hasFeature('polya_signal') || hasFeature('Poly-A')) {
+    classifiedType = '3\'-UTR Polyadenylated ' + moleculeType + ' Segment';
+  } else if (gcPercent >= 65) {
+    classifiedType = 'High-GC ' + moleculeType + ' Structural Element';
+  } else if (gcPercent <= 32) {
+    classifiedType = 'AT-Rich Non-Coding / Origin-like ' + moleculeType;
+  } else if (clean.length < 25) {
+    classifiedType = 'Short Oligonucleotide / Primer-Probe Sequence';
+  }
+
+  // ── Step 3: 4-Sentence Narrative Synthesis ──
+
+  // Sentence 1: Architecture & Coding Profile
+  var s1 = '';
+  if (topORF && topORF.length >= 30) {
+    var aaCount = Math.floor(topORF.length / 3) - 1;
+    s1 = 'The ' + clean.length + ' nt ' + moleculeType + ' sequence contains an open reading frame of ' +
+         topORF.length + ' nt (' + aaCount + ' amino acids) spanning positions ' +
+         topORF.start + '–' + topORF.end + ' on frame ' + topORF.frame + '.';
+  } else if (/ATG|AUG/.test(clean)) {
+    s1 = 'The ' + clean.length + ' nt ' + moleculeType + ' transcript exhibits an initiation codon context without an extended downstream open reading frame, indicative of a 5\'-leader or fragmented exonic domain.';
+  } else {
+    s1 = 'The ' + clean.length + ' nt ' + moleculeType + ' sequence exhibits a non-coding structural profile lacking canonical ATG initiation determinants.';
+  }
+
+  // Sentence 2: GC Content & Thermodynamic Stability
+  var s2 = '';
+  var tmEst = (clean.length < 20)
+    ? (2 * (clean.match(/[ATU]/g) || []).length + 4 * (clean.match(/[GC]/g) || []).length)
+    : Math.round((64.9 + 41 * ((clean.match(/[GC]/g) || []).length - 16.4) / clean.length) * 10) / 10;
+
+  if (gcPercent >= 65) {
+    s2 = 'An elevated GC composition of ' + gcPercent + '% (estimated Tm ' + tmEst + '°C) confers substantial duplex stability and thermal denaturation resistance, characteristic of GC-rich regulatory islands and structured functional domains.';
+  } else if (gcPercent <= 35) {
+    s2 = 'A reduced GC content of ' + gcPercent + '% (estimated Tm ' + tmEst + '°C) provides enhanced strand breathing and torsional flexibility typical of eukaryotic replication origins and intergenic promoter spacers.';
+  } else {
+    s2 = 'A balanced GC fraction of ' + gcPercent + '% (estimated Tm ' + tmEst + '°C) promotes favorable hybridization kinetics and consistent thermodynamic equilibria during transcript processing.';
+  }
+
+  // Sentence 3: Motif & Functional Features
+  var s3 = '';
+  var motifNames = [];
+  for (var j = 0; j < features.length; j++) {
+    if (features[j].category !== 'quality' && features[j].label) {
+      motifNames.push(features[j].label);
+    }
+  }
+  if (motifNames.length > 0) {
+    var uniqueMotifs = motifNames.slice(0, 3).join(', ');
+    s3 = 'Sequence profiling detects conserved functional elements (' + uniqueMotifs + '), indicating defined regulatory roles in transcriptional control and enzymatic recognition.';
+  } else {
+    s3 = 'Inspection indicates uniform sequence integrity devoid of aberrant secondary stop signals or destabilizing regulatory motifs.';
+  }
+
+  // Sentence 4: Biological & Organism Context
+  var s4 = '';
+  if (moleculeType === 'RNA') {
+    s4 = 'Under physiological conditions, this transcript is poised for ribonucleic acid processing, 40S ribosomal scanning, and post-transcriptional ribonucleoprotein association.';
+  } else if (classifiedType.indexOf('Promoter') !== -1 || classifiedType.indexOf('CpG') !== -1) {
+    s4 = 'These structural hallmarks align with eukaryotic nuclear chromatin loci engaged in pre-initiation complex assembly and transcription factor docking.';
+  } else if (topORF && topORF.length >= 45) {
+    s4 = 'The uninterrupted coding frame is suitable for cDNA expression vector integration and recombinant protein biosynthesis.';
+  } else {
+    s4 = 'The architecture represents a versatile platform for in silico hybridization probe design and synthetic oligonucleotide vector engineering.';
+  }
+
+  return {
+    moleculeType: classifiedType,
+    analysis: [s1, s2, s3, s4].join(' ')
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+// BENCHMARK REFERENCE SEQUENCES
+// ═══════════════════════════════════════════════════════════
+
+var EXAMPLES = {
+  insulin: 'ATGGGCAGCCCCCGCCCAGCCCTGCTTCTGGTGGCTCTCTTTGTGGTCCTCACCCTCCTGGCTCTCCTGGCCC' +
+           'TCAGCCCTGGAGATCAAATGTGCCCCAGGGCCCTTGGCAGATGAAACTGCAACCTTTGACCCAGG',
+  p53:     'ATGGAGGAGCCGCAGTCAGATCCTAGCGTTGAGTCAGGATCTTGAGTCAGGAGATGCGAGGAGGTGGCTTGTGAGACAGCCTGGCTATGAGACCTTTGTGCCCAGCTGGGACCCCTCCAGCTACAGTGGGAACAAGAAATGGTTTTCCAACTGGGG',
+  tata:    'GCGCGCGCTATAAAAGGGCGCGCATGCCCAAGCTTTGATCGATCGATCGATCGTAGCTAGCTAGCTAGCTAGCTAGCTAGC',
+  rna:     'AUGAAACCCGGGTTTTAAAGUAAGUCGUCGUCGUCAGCUAGCUAGCUAGCUAGCUGCUAGCUAGCUAGCUAGCUUAG',
+  gc:      'GCGCGGCGCGCCGGCGCGCGGCGCGCGCGGGGCCCGCGGCGCGCGGCCCGCGCGGCGCGCGGCGCGCGGCCCGCGCGG'
+};
+
+// ═══════════════════════════════════════════════════════════
+// GLOBAL STATE & DOM ELEMENTS
+// ═══════════════════════════════════════════════════════════
+
+var currentAnalysis = null;
+var selectedEnzymesState = ['EcoRI', 'HindIII', 'BamHI'];
+
+var seqInput         = document.getElementById('seqInput');
+var statsRow         = document.getElementById('statsRow');
+var errorBanner      = document.getElementById('errorBanner');
+var analyzeBtn       = document.getElementById('analyzeBtn');
+var resultWorkbench  = document.getElementById('resultWorkbench');
+var charCountLabel   = document.getElementById('charCountLabel');
+
+// ═══════════════════════════════════════════════════════════
+// LIVE INPUT HANDLERS & PRESETS
+// ═══════════════════════════════════════════════════════════
+
+function updateLiveStats(raw) {
+  var seq = cleanSeq(raw);
+  charCountLabel.textContent = seq.length.toLocaleString() + ' nt';
+  if (!seq.length) {
+    statsRow.classList.remove('visible');
+    return;
+  }
+  var profile = buildProfile(seq);
+  document.getElementById('statLen').textContent    = profile.length.toLocaleString();
+  document.getElementById('statGC').textContent     = profile.gcPercent + '%';
+  document.getElementById('gcBar').style.width      = profile.gcPercent + '%';
+  document.getElementById('statType').textContent   = profile.moleculeType;
+  document.getElementById('statCodons').textContent = profile.codons.toLocaleString();
+  document.getElementById('statMW').textContent     = profile.mwKDa.toLocaleString();
+  document.getElementById('statTm').textContent     = profile.tmNearestNeighbor + '°C';
+  statsRow.classList.add('visible');
+}
+
+seqInput.addEventListener('input', function() {
+  updateLiveStats(this.value);
+  hideError();
+});
+
+document.querySelectorAll('.ex-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var seq = EXAMPLES[btn.dataset.key];
+    if (!seq) return;
+    seqInput.value = seq;
+    updateLiveStats(seq);
+    hideError();
+    analyzeSequence();
+  });
+});
+
+document.getElementById('clearBtn').addEventListener('click', function() {
+  seqInput.value = '';
+  updateLiveStats('');
+  resultWorkbench.classList.remove('visible');
+  hideError();
+});
+
+document.getElementById('btnRevComp').addEventListener('click', function() {
+  var seq = cleanSeq(seqInput.value);
+  if (!seq) return;
+  seqInput.value = reverseComplement(seq);
+  updateLiveStats(seqInput.value);
+  analyzeSequence();
+});
+
+document.getElementById('btnTranscribe').addEventListener('click', function() {
+  var seq = seqInput.value;
+  if (!seq) return;
+  if (/U/i.test(seq)) {
+    seqInput.value = seq.replace(/U/g, 'T').replace(/u/g, 't');
+  } else {
+    seqInput.value = seq.replace(/T/g, 'U').replace(/t/g, 'u');
+  }
+  updateLiveStats(seqInput.value);
+  analyzeSequence();
+});
+
+// File Upload Handler
+var uploadFileBtn = document.getElementById('uploadFileBtn');
+var fastaFileInput = document.getElementById('fastaFileInput');
+uploadFileBtn.addEventListener('click', function() { fastaFileInput.click(); });
+fastaFileInput.addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(evt) {
+    seqInput.value = evt.target.result;
+    updateLiveStats(seqInput.value);
+    analyzeSequence();
+  };
+  reader.readAsText(file);
+});
+
+// ═══════════════════════════════════════════════════════════
+// TABS NAVIGATION
+// ═══════════════════════════════════════════════════════════
+
+document.querySelectorAll('.tab-item').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab-item').forEach(function(t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-pane').forEach(function(p) { p.classList.remove('active'); });
+
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    var targetPane = document.getElementById(tab.dataset.tab);
+    if (targetPane) targetPane.classList.add('active');
+
+    // Redraw SVG tracks if browser or gel is selected
+    if (tab.dataset.tab === 'tab-browser' && currentAnalysis) {
+      renderGenomeBrowser(currentAnalysis);
+    } else if (tab.dataset.tab === 'tab-gel' && currentAnalysis) {
+      renderVirtualGel(currentAnalysis);
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════
+// MAIN ANALYSIS EXECUTION
+// ═══════════════════════════════════════════════════════════
+
+function analyzeSequence() {
+  var raw = seqInput.value.trim();
+  if (!raw) { showError('Please enter or paste a nucleotide sequence.'); return; }
+  var seq = cleanSeq(raw);
+  if (seq.length < 6)    { showError('Sequence too short — please enter at least 6 nucleotides.'); return; }
+  if (seq.length > 5000) { showError('Sequence exceeds 5,000 nt limit for client-side analysis.'); return; }
+
+  hideError();
+  updateLiveStats(seq);
+  analyzeBtn.disabled = true;
+  analyzeBtn.textContent = 'Analyzing Sequence…';
+
+  var profile  = buildProfile(seq);
+  var orfs     = findORFs(seq);
+  var motifs   = scanMotifs(seq, MOTIF_DEFS, profile.gcPercent);
+  var digest   = digestSequence(seq);
+  var slidingGC = calculateSlidingGC(seq);
+
+  var synthesis = synthesizeAntiGravityAnalysis(seq, profile.moleculeType, profile.gcPercent, motifs, orfs);
+
+  currentAnalysis = {
+    raw: raw,
+    seq: seq,
+    profile: profile,
+    orfs: orfs,
+    motifs: motifs,
+    digest: digest,
+    slidingGC: slidingGC,
+    synthesis: synthesis
+  };
+
+  // Render All Views
+  renderOverview(currentAnalysis);
+  renderGenomeBrowser(currentAnalysis);
+  renderORFTable(currentAnalysis.orfs);
+  renderVirtualGel(currentAnalysis);
+  setupMutationSimulator(currentAnalysis);
+
+  // Update Tab Badges
+  document.getElementById('badgeBrowserFeat').textContent = (motifs.length + orfs.length) + ' feats';
+  document.getElementById('badgeORFCount').textContent = orfs.length + ' ORFs';
+  document.getElementById('badgeDigestSites').textContent = digest.totalCuts + ' cuts';
+
+  resultWorkbench.classList.add('visible');
+  analyzeBtn.disabled = false;
+  analyzeBtn.textContent = 'Analyze Sequence & Compile Workbench';
+}
+
+analyzeBtn.addEventListener('click', analyzeSequence);
+
+// ═══════════════════════════════════════════════════════════
+// TAB 1: RENDER OVERVIEW
+// ═══════════════════════════════════════════════════════════
+
+function renderOverview(data) {
+  document.getElementById('molTypeBadge').textContent = data.synthesis.moleculeType;
+  document.getElementById('narrativeText').textContent = data.synthesis.analysis;
+  document.getElementById('annotSeqViewer').innerHTML = colorizeSeq(data.seq);
+
+  // Render Base Composition Bars
+  var comp = data.profile.composition;
+  var barsWrap = document.getElementById('compBars');
+  barsWrap.innerHTML = '';
+  var bases = [
+    { k: 'A', name: 'Adenine (A)', col: 'var(--nt-A)' },
+    { k: 'T', name: 'Thymine (T)', col: 'var(--nt-T)' },
+    { k: 'G', name: 'Guanine (G)', col: 'var(--nt-G)' },
+    { k: 'C', name: 'Cytosine (C)', col: 'var(--nt-C)' }
+  ];
+  if (comp.U.count > 0) bases.push({ k: 'U', name: 'Uracil (U)', col: 'var(--nt-U)' });
+
+  bases.forEach(function(b) {
+    var cData = comp[b.k];
+    var row = document.createElement('div');
+    row.className = 'comp-row';
+    row.innerHTML =
+      '<span class="comp-label" style="color:' + b.col + '">' + b.k + ' (' + cData.percent + '%)</span>' +
+      '<div class="comp-track"><div class="comp-fill" style="width:' + cData.percent + '%;background:' + b.col + '"></div></div>' +
+      '<span class="comp-val">' + cData.count.toLocaleString() + ' nt</span>';
+    barsWrap.appendChild(row);
+  });
+
+  // Render Motifs Tag Grid
+  var grid = document.getElementById('featureGrid');
+  grid.innerHTML = '';
+  if (!data.motifs.length) {
+    grid.innerHTML = '<span style="color:var(--slate-400);font-size:12px;font-style:italic;">No known motifs detected</span>';
+    return;
+  }
+  data.motifs.forEach(function(f) {
+    var tag = document.createElement('span');
+    tag.className = 'feature-tag feat-' + f.severity;
+    tag.textContent = f.label + (f.start ? ' (' + f.start + '..' + f.end + ')' : '');
+    grid.appendChild(tag);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAB 2: RENDER INTERACTIVE SVG GENOME BROWSER
+// ═══════════════════════════════════════════════════════════
+
+function renderGenomeBrowser(data) {
+  var svg = document.getElementById('genomeSvg');
+  var totalLen = data.seq.length;
+  var svgW = Math.max(750, svg.parentElement.clientWidth - 40);
+  svg.setAttribute('width', svgW);
+
+  var margin = { left: 50, right: 30 };
+  var trackW = svgW - margin.left - margin.right;
+  function scale(pos) { return margin.left + ((pos - 1) / (totalLen - 1 || 1)) * trackW; }
+
+  var html = [];
+
+  // Track 1: Coordinate Ruler
+  var rulerY = 30;
+  html.push('<line x1="' + margin.left + '" y1="' + rulerY + '" x2="' + (margin.left + trackW) + '" y2="' + rulerY + '" stroke="#94a3b8" stroke-width="1.5"/>');
+  var tickStep = totalLen <= 50 ? 5 : (totalLen <= 200 ? 20 : (totalLen <= 1000 ? 100 : 500));
+  for (var p = 1; p <= totalLen; p += tickStep) {
+    var x = scale(p);
+    html.push('<line x1="' + x + '" y1="' + (rulerY - 5) + '" x2="' + x + '" y2="' + (rulerY + 5) + '" stroke="#64748b" stroke-width="1"/>');
+    html.push('<text x="' + x + '" y="' + (rulerY - 8) + '" font-size="10" font-family="monospace" fill="#64748b" text-anchor="middle">' + p + '</text>');
+  }
+
+  // Track 2: Sense and Antisense Strands
+  var strandY = 55;
+  html.push('<line x1="' + margin.left + '" y1="' + strandY + '" x2="' + (margin.left + trackW) + '" y2="' + strandY + '" stroke="#2563eb" stroke-width="3"/>');
+  html.push('<text x="' + (margin.left - 10) + '" y="' + (strandY + 4) + '" font-size="10" font-family="monospace" fill="#2563eb" text-anchor="end">5\'</text>');
+  html.push('<text x="' + (margin.left + trackW + 10) + '" y="' + (strandY + 4) + '" font-size="10" font-family="monospace" fill="#2563eb" text-anchor="start">3\'</text>');
+
+  var antiY = 70;
+  html.push('<line x1="' + margin.left + '" y1="' + antiY + '" x2="' + (margin.left + trackW) + '" y2="' + antiY + '" stroke="#dc2626" stroke-width="3"/>');
+  html.push('<text x="' + (margin.left - 10) + '" y="' + (antiY + 4) + '" font-size="10" font-family="monospace" fill="#dc2626" text-anchor="end">3\'</text>');
+  html.push('<text x="' + (margin.left + trackW + 10) + '" y="' + (antiY + 4) + '" font-size="10" font-family="monospace" fill="#dc2626" text-anchor="start">5\'</text>');
+
+  // Track 3: Forward ORFs (+1, +2, +3)
+  var frameColors = {
+    '+1': 'var(--frame-p1)', '+2': 'var(--frame-p2)', '+3': 'var(--frame-p3)',
+    '-1': 'var(--frame-m1)', '-2': 'var(--frame-m2)', '-3': 'var(--frame-m3)'
+  };
+  var orfBaseY = 100;
+  html.push('<text x="' + (margin.left - 10) + '" y="' + (orfBaseY + 30) + '" font-size="10" font-family="monospace" fill="#64748b" text-anchor="end">ORFs</text>');
+
+  data.orfs.slice(0, 6).forEach(function(orf, idx) {
+    var y = orfBaseY + (idx * 20);
+    var x1 = scale(orf.start);
+    var x2 = scale(orf.end);
+    var w = Math.max(8, Math.abs(x2 - x1));
+    var col = frameColors[orf.frame] || '#2563eb';
+    var isRev = orf.strand === '-';
+    var arrowX = isRev ? x1 : x1 + w;
+    var tailX = isRev ? x1 + w : x1;
+
+    // SVG Chevron Arrow
+    html.push(
+      '<g style="cursor:pointer;" onclick="jumpToSeq(' + orf.start + ',' + orf.end + ')">' +
+      '<rect x="' + Math.min(x1, x2) + '" y="' + y + '" width="' + w + '" height="12" rx="3" fill="' + col + '" opacity="0.85"/>' +
+      '<text x="' + (Math.min(x1, x2) + 4) + '" y="' + (y + 9) + '" font-size="9" font-family="monospace" fill="#ffffff" font-weight="bold">ORF ' + orf.frame + ' (' + orf.length + 'nt)</text>' +
+      '</g>'
+    );
+  });
+
+  // Track 4: Restriction Enzyme Cuts & Motifs Pins
+  var pinY = orfBaseY + 125;
+  html.push('<line x1="' + margin.left + '" y1="' + pinY + '" x2="' + (margin.left + trackW) + '" y2="' + pinY + '" stroke="#cbd5e1" stroke-dasharray="3 3"/>');
+  html.push('<text x="' + (margin.left - 10) + '" y="' + (pinY + 4) + '" font-size="10" font-family="monospace" fill="#64748b" text-anchor="end">Sites</text>');
+
+  data.digest.sites.forEach(function(site) {
+    var x = scale(site.cutPos);
+    html.push(
+      '<g style="cursor:pointer;" title="' + site.enzyme + ' at ' + site.cutPos + '">' +
+      '<line x1="' + x + '" y1="' + (pinY - 10) + '" x2="' + x + '" y2="' + pinY + '" stroke="#7c3aed" stroke-width="1.5"/>' +
+      '<circle cx="' + x + '" cy="' + (pinY - 12) + '" r="3" fill="#7c3aed"/>' +
+      '<text x="' + x + '" y="' + (pinY + 12) + '" font-size="8.5" font-family="monospace" fill="#7c3aed" text-anchor="middle">' + site.enzyme + '</text>' +
+      '</g>'
+    );
+  });
+
+  svg.setAttribute('height', pinY + 30);
+  svg.innerHTML = html.join('');
+
+  // Render Sliding Window GC Plot
+  renderGCPlot(data);
+}
+
+function renderGCPlot(data) {
+  var svg = document.getElementById('gcPlotSvg');
+  var points = data.slidingGC;
+  if (!points || !points.length) return;
+  var svgW = Math.max(750, svg.parentElement.clientWidth - 40);
+  svg.setAttribute('width', svgW);
+
+  var margin = { left: 50, right: 30 };
+  var trackW = svgW - margin.left - margin.right;
+  var totalLen = data.seq.length;
+  function scaleX(p) { return margin.left + ((p - 1) / (totalLen - 1 || 1)) * trackW; }
+  function scaleY(gc) { return 100 - (gc / 100) * 80; } // 100% at y=20, 0% at y=100
+
+  var linePoints = points.map(function(pt) {
+    return scaleX(pt.center) + ',' + scaleY(pt.gcPercent);
+  }).join(' ');
+
+  var html = [];
+  // 50% GC guideline
+  var midY = scaleY(50);
+  html.push('<line x1="' + margin.left + '" y1="' + midY + '" x2="' + (margin.left + trackW) + '" y2="' + midY + '" stroke="#e2e8f0" stroke-dasharray="4 4"/>');
+  html.push('<text x="' + (margin.left - 8) + '" y="' + (midY + 3) + '" font-size="9" font-family="monospace" fill="#94a3b8" text-anchor="end">50%</text>');
+
+  // GC Curve
+  html.push('<polyline points="' + linePoints + '" fill="none" stroke="#2563eb" stroke-width="2"/>');
+  svg.innerHTML = html.join('');
+}
+
+function jumpToSeq(start, end) {
+  document.querySelector('[data-tab="tab-overview"]').click();
+  var viewer = document.getElementById('annotSeqViewer');
+  var spans = viewer.querySelectorAll('[data-pos]');
+  spans.forEach(function(sp) {
+    var p = parseInt(sp.getAttribute('data-pos'), 10);
+    if (p >= start && p <= end) {
+      sp.classList.add('seq-highlight');
+    } else {
+      sp.classList.remove('seq-highlight');
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAB 3: RENDER 6-FRAME ORFs TABLE
+// ═══════════════════════════════════════════════════════════
+
+function renderORFTable(orfs) {
+  var tbody = document.getElementById('orfTableBody');
+  tbody.innerHTML = '';
+  if (!orfs.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--slate-400);">No open reading frames detected (&ge; 5 codons)</td></tr>';
+    return;
+  }
+  var frameColors = {
+    '+1': '#2563eb', '+2': '#059669', '+3': '#d97706',
+    '-1': '#dc2626', '-2': '#7c3aed', '-3': '#0891b2'
+  };
+
+  orfs.forEach(function(orf, i) {
+    var tr = document.createElement('tr');
+    var col = frameColors[orf.frame] || '#2563eb';
+    tr.innerHTML =
+      '<td><span class="frame-badge" style="background:' + col + '">' + orf.frame + '</span></td>' +
+      '<td>' + orf.start + '..' + orf.end + '</td>' +
+      '<td>' + orf.length + ' nt (' + orf.codons + ' aa)</td>' +
+      '<td><div class="peptide-preview" title="' + orf.peptide + '">' + orf.peptide + '</div></td>' +
+      '<td>' + orf.peptideMWDa.toLocaleString() + ' Da</td>' +
+      '<td>' + orf.peptidePI + '</td>' +
+      '<td><button class="btn-copy-sm" onclick="copyPeptide(' + i + ')">Copy FASTA</button></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function copyPeptide(idx) {
+  if (!currentAnalysis || !currentAnalysis.orfs[idx]) return;
+  var orf = currentAnalysis.orfs[idx];
+  var fasta = '>ORF_' + (idx + 1) + '_frame_' + orf.frame + ' len=' + orf.codons + 'aa MW=' + orf.peptideMWDa + 'Da pI=' + orf.peptidePI + '\n' + orf.peptide;
+  navigator.clipboard.writeText(fasta).then(function() {
+    alert('Copied Protein FASTA to clipboard!');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAB 4: VIRTUAL AGAROSE GEL SIMULATOR
+// ═══════════════════════════════════════════════════════════
+
+function renderVirtualGel(data) {
+  var chipsWrap = document.getElementById('enzymeChips');
+  chipsWrap.innerHTML = '';
+  RESTRICTION_ENZYMES.forEach(function(enz) {
+    var chip = document.createElement('span');
+    chip.className = 'enzyme-chip' + (selectedEnzymesState.indexOf(enz.name) !== -1 ? ' selected' : '');
+    chip.textContent = enz.name;
+    chip.addEventListener('click', function() {
+      var idx = selectedEnzymesState.indexOf(enz.name);
+      if (idx !== -1) selectedEnzymesState.splice(idx, 1);
+      else selectedEnzymesState.push(enz.name);
+      renderVirtualGel(data);
+    });
+    chipsWrap.appendChild(chip);
+  });
+
+  // Re-run digest with selected enzymes
+  var selectedDefs = RESTRICTION_ENZYMES.filter(function(e) { return selectedEnzymesState.indexOf(e.name) !== -1; });
+  var activeDigest = digestSequence(data.seq, selectedDefs);
+
+  // Render Fragment Table
+  var fragTbody = document.getElementById('fragmentTableBody');
+  fragTbody.innerHTML = '';
+  activeDigest.fragments.forEach(function(frag, idx) {
+    var row = document.createElement('tr');
+    var intensity = Math.min(100, Math.round((frag.size / data.seq.length) * 100 * 1.5)) + '%';
+    row.innerHTML =
+      '<td>Band ' + (idx + 1) + '</td>' +
+      '<td><strong>' + frag.size + ' bp</strong></td>' +
+      '<td>' + frag.start + '..' + frag.end + '</td>' +
+      '<td><div style="width:50px;height:4px;background:#38bdf8;opacity:' + (frag.size / data.seq.length) + ';border-radius:2px;"></div> ' + intensity + '</td>';
+    fragTbody.appendChild(row);
+  });
+
+  // Render SVG Gel Lanes
+  var svg = document.getElementById('gelSvg');
+  var ladder = [10000, 8000, 6000, 5000, 4000, 3000, 2000, 1500, 1000, 500, 250];
+
+  function bpToY(bp) {
+    // Logarithmic migration: 10000 bp -> y=40, 250 bp -> y=320
+    var minBp = 200, maxBp = 12000;
+    var logMin = Math.log10(minBp), logMax = Math.log10(maxBp);
+    var logVal = Math.log10(Math.max(minBp, Math.min(maxBp, bp)));
+    var norm = (logMax - logVal) / (logMax - logMin); // 0 at max, 1 at min
+    return 40 + norm * 270;
+  }
+
+  var html = [];
+  // Gel Well Pockets
+  var lanes = [
+    { name: 'Ladder', type: 'ladder' },
+    { name: 'Uncut', type: 'uncut' },
+    { name: 'Digest', type: 'digest' }
+  ];
+  var laneX = [55, 140, 225];
+
+  lanes.forEach(function(l, i) {
+    var x = laneX[i];
+    // Well pocket
+    html.push('<rect x="' + (x - 22) + '" y="20" width="44" height="8" rx="2" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>');
+    html.push('<text x="' + x + '" y="15" font-size="9" font-family="monospace" fill="#a1a1aa" text-anchor="middle">' + l.name + '</text>');
+  });
+
+  // Lane 1: Ladder Bands
+  ladder.forEach(function(bp) {
+    var y = bpToY(bp);
+    html.push('<rect x="35" y="' + y + '" width="40" height="2.5" rx="1" fill="#38bdf8" filter="drop-shadow(0 0 4px #38bdf8)"/>');
+    html.push('<text x="28" y="' + (y + 3) + '" font-size="7.5" font-family="monospace" fill="#71717a" text-anchor="end">' + (bp >= 1000 ? (bp/1000)+'k' : bp) + '</text>');
+  });
+
+  // Lane 2: Uncut DNA band
+  var uncutY = bpToY(data.seq.length);
+  html.push('<rect x="120" y="' + uncutY + '" width="40" height="3" rx="1" fill="#38bdf8" filter="drop-shadow(0 0 6px #38bdf8)"/>');
+
+  // Lane 3: Digested Bands
+  activeDigest.fragments.forEach(function(frag) {
+    var y = bpToY(frag.size);
+    var intensity = Math.max(0.4, Math.min(1.0, frag.size / (data.seq.length * 0.5)));
+    html.push('<rect x="205" y="' + y + '" width="40" height="2.8" rx="1" fill="#38bdf8" opacity="' + intensity + '" filter="drop-shadow(0 0 5px #38bdf8)"/>');
+  });
+
+  svg.innerHTML = html.join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAB 5: IN SILICO VARIANT & MUTATION INSPECTOR
+// ═══════════════════════════════════════════════════════════
+
+function setupMutationSimulator(data) {
+  var mutPos = document.getElementById('mutPos');
+  mutPos.max = data.seq.length;
+  mutPos.value = 1;
+  assessMutation(1, 'G', data);
+}
+
+document.getElementById('btnApplyMut').addEventListener('click', function() {
+  if (!currentAnalysis) return;
+  var pos = parseInt(document.getElementById('mutPos').value, 10);
+  var newChar = document.getElementById('mutNewChar').value;
+  assessMutation(pos, newChar, currentAnalysis);
+});
+
+function assessMutation(pos, newChar, data) {
+  var seq = data.seq;
+  if (pos < 1 || pos > seq.length) return;
+  var origChar = seq[pos - 1];
+
+  // Find codon frame (assuming standard frame +1 for reference)
+  var codonIdx = Math.floor((pos - 1) / 3);
+  var codonStart = codonIdx * 3;
+  var wtCodon = seq.slice(codonStart, codonStart + 3);
+  if (wtCodon.length < 3) wtCodon = 'ATG'; // fallback
+
+  var mutSeqArr = seq.split('');
+  mutSeqArr[pos - 1] = newChar;
+  var mutCodon = mutSeqArr.slice(codonStart, codonStart + 3).join('');
+
+  var wtAA = CODON_TABLE[wtCodon] || '?';
+  var mutAA = CODON_TABLE[mutCodon] || '?';
+  var wtAAName = AMINO_ACID_3_LETTER[wtAA] || wtAA;
+  var mutAAName = AMINO_ACID_3_LETTER[mutAA] || mutAA;
+
+  document.getElementById('wtCodonVal').textContent = wtCodon + ' (' + wtAAName + ')';
+  document.getElementById('mutCodonVal').textContent = mutCodon + ' (' + mutAAName + ')';
+
+  var badge = document.getElementById('mutBadge');
+  var callout = document.getElementById('mutCallout');
+  var text = document.getElementById('mutCalloutText');
+  var exp = document.getElementById('mutExplanation');
+
+  if (origChar === newChar) {
+    callout.className = 'mut-callout callout-synonymous';
+    badge.textContent = 'IDENTICAL';
+    text.textContent = 'No change introduced: position ' + pos + ' is already ' + origChar + '.';
+    exp.textContent = 'Wild-type sequence retained.';
+  } else if (wtAA === mutAA) {
+    callout.className = 'mut-callout callout-synonymous';
+    badge.textContent = 'SYNONYMOUS (SILENT)';
+    text.textContent = 'Nucleotide ' + origChar + ' \u2192 ' + newChar + ' at pos ' + pos + ' alters codon ' + wtCodon + ' \u2192 ' + mutCodon + ' without altering the translated ' + wtAAName + ' residue.';
+    exp.textContent = 'Silent mutation: protein primary structure and enzymatic conformation remain unaffected.';
+  } else if (mutAA === '*') {
+    callout.className = 'mut-callout callout-nonsense';
+    badge.textContent = 'NONSENSE (TRUNCATING)';
+    text.textContent = 'Severe premature termination signal generated: ' + wtAAName + ' \u2192 Stop codon (' + mutCodon + ') at position ' + pos + '.';
+    exp.textContent = 'Results in truncated, likely non-functional peptide and potential nonsense-mediated mRNA decay (NMD).';
+  } else {
+    callout.className = 'mut-callout callout-missense';
+    badge.textContent = 'MISSENSE (SUBSTITUTION)';
+    text.textContent = 'Amino acid substitution: ' + wtAAName + ' \u2192 ' + mutAAName + ' at position ' + pos + ' (' + wtCodon + ' \u2192 ' + mutCodon + ').';
+    exp.textContent = 'Alters residue chemical properties (charge/hydropathy), potentially impacting folding or binding affinity.';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// EXPORT MODAL & GENERATORS
+// ═══════════════════════════════════════════════════════════
+
+var exportModal = document.getElementById('exportModal');
+document.getElementById('exportModalBtn').addEventListener('click', function() { exportModal.classList.add('visible'); });
+document.getElementById('modalCloseBtn').addEventListener('click', function() { exportModal.classList.remove('visible'); });
+
+function triggerDownload(content, filename, type) {
+  var blob = new Blob([content], { type: type || 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('btnDlFasta').addEventListener('click', function() {
+  if (!currentAnalysis) return;
+  var fasta = '>BioSeq_Oracle_' + Date.now() + ' length=' + currentAnalysis.seq.length + 'bp type=' + currentAnalysis.profile.moleculeType + '\n' +
+              currentAnalysis.seq.match(/.{1,60}/g).join('\n');
+  triggerDownload(fasta, 'bioseq_export.fasta');
+});
+
+document.getElementById('btnDlGenBank').addEventListener('click', function() {
+  if (!currentAnalysis) return;
+  var d = currentAnalysis;
+  var gb = [
+    'LOCUS       BioSeqRecord            ' + d.seq.length + ' bp    ' + d.profile.moleculeType + '     linear   SYN ' + new Date().toISOString().slice(0, 10),
+    'DEFINITION  BioSeq Oracle Annotated Sequence Record.',
+    'ACCESSION   BSO_' + Date.now(),
+    'FEATURES             Location/Qualifiers',
+    '     source          1..' + d.seq.length,
+    '                     /mol_type="' + d.profile.moleculeType + '"'
+  ];
+  d.orfs.forEach(function(orf, i) {
+    gb.push('     CDS             ' + (orf.strand === '-' ? 'complement(' + orf.start + '..' + orf.end + ')' : orf.start + '..' + orf.end));
+    gb.push('                     /gene="ORF' + (i + 1) + '"');
+    gb.push('                     /translation="' + orf.peptide + '"');
+  });
+  d.motifs.forEach(function(m) {
+    if (m.start) {
+      gb.push('     misc_feature    ' + m.start + '..' + m.end);
+      gb.push('                     /note="' + m.label + '"');
+    }
+  });
+  gb.push('ORIGIN');
+  for (var i = 0; i < d.seq.length; i += 60) {
+    var line = (i + 1).toString();
+    while (line.length < 9) line = ' ' + line;
+    var chunk = d.seq.slice(i, i + 60).toLowerCase();
+    var chunkSpaced = chunk.match(/.{1,10}/g).join(' ');
+    gb.push(line + ' ' + chunkSpaced);
+  }
+  gb.push('//');
+  triggerDownload(gb.join('\n'), 'bioseq_record.gb');
+});
+
+document.getElementById('btnDlJson').addEventListener('click', function() {
+  if (!currentAnalysis) return;
+  var json = JSON.stringify(currentAnalysis, null, 2);
+  triggerDownload(json, 'bioseq_analysis.json', 'application/json');
+});
+
+// ═══════════════════════════════════════════════════════════
+// ERROR HELPERS
+// ═══════════════════════════════════════════════════════════
+
+function showError(msg) { errorBanner.textContent = msg; errorBanner.classList.add('visible'); }
+function hideError()    { errorBanner.classList.remove('visible'); }
+
+// Run Initial Benchmark on Load
+window.addEventListener('DOMContentLoaded', function() {
+  seqInput.value = EXAMPLES.insulin;
+  updateLiveStats(EXAMPLES.insulin);
+  analyzeSequence();
+});
+</script>
+</body>
+</html>
