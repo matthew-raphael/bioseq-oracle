@@ -3,8 +3,9 @@
 > **In Silico Sequence Intelligence & Molecular Biology Workbench**  
 > *Offline · Zero API Key · Model Workspace Protocol (MWP) · 100% Pure Standard Library*
 
+[![Live Demo](https://img.shields.io/badge/demo-Launch%20Live%20App-success)](https://matthew-raphael.github.io/bioseq-oracle/)
 [![Tests](https://img.shields.io/badge/tests-15%2F15%20passing-brightgreen)](#automated-testing)
-[![Runtime](https://img.shields.io/badge/runtime-100%25%20Offline%20%7C%20Zero%20API%20Key-blue)](#runtime-architecture)
+[![Runtime](https://img.shields.io/badge/runtime-100%25%20Offline%20%7C%20Zero%20API%20Key-blue)](#core-architectural-principles)
 [![Architecture](https://img.shields.io/badge/spec-5--Layer%20MWP%20Context-purple)](#architecture--the-5-layer-model-workspace-protocol)
 [![Zero-Dependencies](https://img.shields.io/badge/dependencies-Zero%20External%20(stdlib%20only)-orange)](#core-architectural-principles)
 
@@ -147,15 +148,16 @@ flowchart LR
 
 ## Quickstart
 
-### 1. Launch the Interactive Web Application
-Open the standalone application directly in any modern browser:
-```bash
-open bioseq-oracle.html
-```
-*(Or compile fresh from source:)*
-```bash
-python3 shared/scripts/compile_ui.py
-```
+### 1. Launch the Web Application
+- **Hosted Live Demo**: [https://matthew-raphael.github.io/bioseq-oracle/](https://matthew-raphael.github.io/bioseq-oracle/)
+- **Local Offline Browser**:
+  ```bash
+  open index.html
+  ```
+  *(Or compile fresh from source:)*
+  ```bash
+  python3 shared/scripts/compile_ui.py
+  ```
 
 ### 2. Run the End-to-End CLI Pipeline
 Analyze reference benchmarks or custom sequences through all 4 pipeline stages:

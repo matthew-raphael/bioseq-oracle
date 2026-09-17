@@ -46,12 +46,15 @@ def compile_html():
     out_dir = os.path.join(ROOT, 'stages', '04_ui_assembly', 'output')
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, 'bioseq-oracle.html')
+    root_html = os.path.join(ROOT, 'bioseq-oracle.html')
+    index_html = os.path.join(ROOT, 'index.html')
 
-    with open(out_path, 'w', encoding='utf-8') as f:
-        f.write(html)
+    for p in [out_path, root_html, index_html]:
+        with open(p, 'w', encoding='utf-8') as f:
+            f.write(html)
 
     size_kb = len(html.encode('utf-8')) / 1024.0
-    print(f"✓ Compiled successfully → {out_path}")
+    print(f"✓ Compiled successfully → {out_path} and {index_html}")
     print(f"  Artifact Size: {size_kb:.1f} KB")
     return out_path
 
