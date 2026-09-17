@@ -6,53 +6,67 @@
 [![Tests](https://img.shields.io/badge/tests-15%2F15%20passing-brightgreen)](#automated-testing)
 [![Runtime](https://img.shields.io/badge/runtime-100%25%20Offline%20%7C%20Zero%20API%20Key-blue)](#runtime-architecture)
 [![Architecture](https://img.shields.io/badge/spec-5--Layer%20MWP%20Context-purple)](#architecture--the-5-layer-model-workspace-protocol)
-[![Zero-Dependencies](https://img.shields.io/badge/dependencies-Zero%20External%20(stdlib%20only)-orange)](#zero-dependency-philosophy)
+[![Zero-Dependencies](https://img.shields.io/badge/dependencies-Zero%20External%20(stdlib%20only)-orange)](#core-architectural-principles)
 
 ---
 
-## Executive Summary
+## Overview: What is BioSeq Oracle?
 
-**BioSeq Oracle** is a production-grade bioinformatics platform and in silico sequence intelligence engine designed for both autonomous AI agents and molecular biologists. It performs deterministic physicochemical profiling, 6-frame reading frame detection, protein translation, regulatory motif mapping, and virtual laboratory simulation—coupled with an offline biological narrative synthesis engine that requires **zero external cloud API calls, zero npm packages, and zero pip installations**.
+Computers run on binary software written in **1s and 0s**.  
+Living organisms run on genetic software written with **4 chemical letters: A, T, C, and G** (DNA and RNA). 
 
-Built around a **5-Layer Context Architecture (Model Workspace Protocol)**, BioSeq Oracle establishes a clean, mathematically rigorous boundary between **deterministic biophysical computation** and **higher-order biological synthesis**, preventing the mathematical hallucinations that plague standard LLM biology tools.
+In nature, long sequences of these letters act as digital recipe books, instructing living cells how to build **proteins**—the microscopic engines, antibodies, and hormone signals (such as insulin) that make life work.
+
+**BioSeq Oracle is an all-in-one interactive code editor and simulator for DNA.** When a user pastes in a genetic sequence, the engine decodes the underlying biological program in **under 4 milliseconds**:
+- Identifying hidden protein recipes across all forward and reverse reading paths.
+- Translating genetic code into real protein primary structures.
+- Simulating wet-lab molecular cloning cuts and UV fluorescent gel experiments.
+- Assessing whether single-letter mutations cause disease or remain harmless.
+- Generating expert scientific narratives—**all 100% offline with zero cloud API keys, zero npm packages, and zero pip installations**.
+
+Built around a **5-Layer Model Workspace Protocol (MWP)**, BioSeq Oracle draws a strict line between **exact mathematical physics** and **contextual narrative synthesis**, completely eliminating the mathematical hallucinations common in standard AI tools.
 
 ---
 
 ## Key Capabilities
 
 ### 1. Interactive Multi-Track Linear Genome Browser
-- **Dynamic Coordinate Ruler**: Scalable 1-indexed coordinate scale with major/minor tick marks.
-- **Dual-Strand Display**: Simultaneous visualization of sense (5'→3') and antisense (3'→5') strands.
-- **6-Frame ORF Chevrons**: Directional arrows color-coded by frame (`+1`, `+2`, `+3`, `-1`, `-2`, `-3`).
-- **Restriction Enzyme Cleavage Pins**: Exact cut site markers (EcoRI, BamHI, HindIII, NotI, XhoI, PstI, etc.).
-- **Interactive Sequence Inspector**: Clicking or hovering any feature arrow instantly centers and highlights the corresponding nucleotides in the sequence viewer.
-- **Sliding-Window GC Content & Skew Plot**: Real-time SVG line chart of GC% and GC Skew $\left(\frac{G - C}{G + C}\right)$, diagnostic of replication origins (*oriC*).
+*A visual blueprint that turns thousands of abstract genetic letters into an intuitive, interactive map.*
+- **Dynamic Coordinate Ruler**: Scalable 1-indexed coordinate scale with major and minor tick marks ($1 \dots N\text{ bp}$).
+- **Dual-Strand Display**: Simultaneous visualization of the sense ($5'\to 3'$) and antisense ($3'\to 5'$) strands.
+- **6-Frame ORF Chevrons**: Directional chevron arrows color-coded by reading frame (`+1`, `+2`, `+3`, `-1`, `-2`, `-3`).
+- **Restriction Cleavage Pins**: Pinpoint markers for molecular scissor cut sites (EcoRI, BamHI, HindIII, NotI, XhoI, PstI, etc.).
+- **Interactive Sequence Inspector**: Clicking or hovering any feature arrow instantly jumps to and highlights the corresponding letters in the sequence inspector.
+- **Sliding-Window GC Content & Skew Plot**: Real-time SVG curve graphing local stability and GC Skew $\left(\frac{G - C}{G + C}\right)$, used by geneticists to pinpoint replication origins (*oriC*).
 
-### 2. Full 6-Frame Open Reading Frame (ORF) & Translation Engine
-- Scans both forward and reverse-complement strands for all initiation-to-termination spans ($\ge 15\text{ nt}$).
-- Translates nucleotide codons into IUPAC primary amino acid sequences (`Met-Gly-Ser...`).
-- Computes peptide molecular weight (Da) and estimated isoelectric point (pI) using the Bjellqvist multi-pK charge balance model.
-- One-click copy for Protein FASTA records.
+### 2. Full 6-Frame Open Reading Frame (ORF) & Protein Translation Engine
+*Decoding the true protein recipes hidden inside double-stranded DNA.*
+- **Bidirectional 6-Frame Scanning**: DNA is read in 3-letter words and can be read forward or backward across 3 offsets. BioSeq Oracle scans all 6 paths to identify every legitimate protein-coding span ($\ge 15\text{ nt}$).
+- **Protein Primary Sequence Translation**: Translates nucleotide codons into standard IUPAC amino acid sequences (`Met-Gly-Ser...`).
+- **Biochemical Property Calculation**: Computes exact monoisotopic peptide molecular weights (Da) and predicts the isoelectric point (pI) using the Bjellqvist multi-pK charge balance model.
+- **One-Click Export**: Copy clean Protein FASTA records with a single click.
 
 ### 3. Virtual Agarose Gel Electrophoresis Simulator
-- **Simulated 302nm UV Transilluminator Chamber**: High-contrast digital darkroom visualization.
-- **DNA Size Standards**: NEB 1 kb Plus DNA Ladder standard (10,000 bp down to 250 bp).
-- **Physics-Based Migration**: Simulates electrophoretic mobility according to logarithmic migration physics:
+*Bringing wet-lab laboratory verification directly into the browser.*
+- **Simulated 302nm UV Transilluminator Chamber**: High-contrast digital darkroom experience.
+- **DNA Molecular Weight Standards**: Standard NEB 1 kb Plus DNA Ladder (10,000 bp down to 250 bp).
+- **Physics-Based Migration**: Simulates electrophoretic mobility according to real logarithmic migration physics:
   $$\text{Migration Distance} \propto -\log_{10}(\text{Fragment Length in bp})$$
-- **Single & Double Digest Testing**: Interactive enzyme toggles update predicted cleavage bands and mass-proportional fluorescence intensities in real time.
+- **Single & Double Digest Simulation**: Interactive enzyme chips let users simulate single or double digests in real time, with band brightness proportional to DNA fragment mass.
 
 ### 4. In Silico Variant & Mutation Impact Inspector
-- Interactive single-nucleotide variant (SNV) simulator.
-- Tests any coordinate position ($1 \dots N$) and alternative base in real time.
-- Categorizes functional impact:
-  - **Synonymous / Silent**: Codon changes without altering residue identity.
-  - **Missense**: Amino acid substitution alters charge/hydropathy.
-  - **Nonsense / Truncating**: Premature termination codon triggers peptide truncation.
+*Testing whether a single DNA typo causes disease or remains harmless.*
+- **Interactive Single-Nucleotide Variant (SNV) Simulator**: Test any letter position ($1 \dots N$) with alternative bases.
+- **Real-Time Functional Classification**:
+  - **Synonymous / Silent (Green)**: The codon changes, but the resulting amino acid is identical. Harmless!
+  - **Missense (Amber)**: The codon changes the amino acid to a different chemical building block, potentially altering protein folding or function.
+  - **Nonsense / Truncating (Red)**: The typo introduces an accidental stop codon, chopping the protein in half.
 
 ### 5. Multi-Format Industrial Export
+*Lab-ready file formats compatible with commercial bioinformatics software.*
 - **FASTA** (`.fasta`): Standard 60-character wrapped nucleotide sequence with structured identifier header.
-- **NCBI GenBank** (`.gb`): Flatfile format with CDS features, coordinates, translations, and origin block.
-- **JSON Payload** (`.json`): Complete machine-readable analysis payload for computational pipelines and AI agent ingestion.
+- **NCBI GenBank** (`.gb`): Flatfile record with full CDS annotations, coordinates, and origin sequence.
+- **JSON Payload** (`.json`): Comprehensive machine-readable data payload for automated bioinformatics pipelines.
 
 ---
 
@@ -134,9 +148,9 @@ flowchart LR
 ## Quickstart
 
 ### 1. Launch the Interactive Web Application
-Open the pre-compiled standalone application directly in any modern browser:
+Open the standalone application directly in any modern browser:
 ```bash
-open stages/04_ui_assembly/output/bioseq-oracle.html
+open bioseq-oracle.html
 ```
 *(Or compile fresh from source:)*
 ```bash
@@ -144,12 +158,12 @@ python3 shared/scripts/compile_ui.py
 ```
 
 ### 2. Run the End-to-End CLI Pipeline
-Analyze reference benchmarks or custom FASTA files through all 4 pipeline stages:
+Analyze reference benchmarks or custom sequences through all 4 pipeline stages:
 ```bash
 # Run with Human Insulin ground truth
 python3 shared/scripts/pipeline.py --example insulin
 
-# Run with TP53 ground truth
+# Run with TP53 tumor suppressor ground truth
 python3 shared/scripts/pipeline.py --example p53
 
 # Run with a custom sequence
@@ -194,17 +208,15 @@ OK (100% Passed)
 
 ---
 
-## Engineering Highlights for Technical Recruiters
+## Core Architectural Principles
 
-When evaluating BioSeq Oracle, technical hiring managers and engineering leads should note:
-
-1. **Authentic Computational Biology Depth**: Rather than trivial string replacements, the platform implements 6-frame bidirectional translation, monoisotopic peptide molecular weights, Bjellqvist isoelectric charge balance equations, and SantaLucia nearest-neighbor thermodynamic calculations.
-2. **Zero-Dependency Architectural Discipline**: The entire system—CLI runner, test suite, UI compiler, and single-file web application—operates with zero external npm or pip dependencies. It runs instantly on any machine with standard Python 3 and a browser.
-3. **Graphics & Visualization Engineering**: Custom SVG rendering engines for the multi-track linear genome browser and the virtual agarose gel simulator, built without heavy third-party visualization frameworks (D3, Chart.js).
-4. **Anti-Hallucination Agentic Design**: Explicit demarcation of deterministic biophysical ground truth vs. generative biological synthesis, illustrating best practices for LLM agent integration (Model Context Protocol).
+1. **Deterministic Precision vs. AI Synthesis**: Core biophysical calculations (thermodynamic melting temperatures, molecular weights, 6-frame translations, and restriction fragment lengths) are strictly deterministic and mathematically guaranteed. The AI synthesis engine focuses purely on high-level biological categorization, preventing numeric hallucinations.
+2. **Zero External Dependencies**: The entire project—including the CLI orchestrator, test suite, and web application—relies exclusively on the Python 3 standard library and native browser web standards (HTML5, SVG, CSS, JavaScript). It runs out of the box on any system without package managers.
+3. **High-Performance Lightweight Visualization**: Custom SVG engines drive the multi-track linear genome browser, GC curves, and virtual agarose gel without bulky external visualization libraries.
+4. **Structured Agentic Compatibility**: Designed following the Model Workspace Protocol (MWP), allowing autonomous agents or humans to inspect, audit, and modify structured artifacts between pipeline stages.
 
 ---
 
 ## License
 
-MIT License. Designed for research, educational, and computational biology portfolio review.
+MIT License. Designed for research, educational, and computational biology use.
